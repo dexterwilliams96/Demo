@@ -9,4 +9,5 @@ app.config['SECRET_KEY'] = "resource-manager-demo"
 db = SQLAlchemy(app)
 
 
+
 from routes import *
