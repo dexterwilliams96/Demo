@@ -7,15 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-function createData(id, content, startDate, endDate) {
-  return { id, content, startDate, endDate };
-}
-
-const rows = [
-  createData(159, 6.0, 24, 4.0)
-];
-
-export default function TaskTable() {
+export default function TaskTable({ tasks }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -28,7 +20,7 @@ export default function TaskTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {tasks.map((row) => (
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

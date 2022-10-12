@@ -12,12 +12,32 @@ import TaskTable from "./TaskTable";
 import TeamList from "./TeamList";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import ProfileDialog from "./ProfileDialog"
+
 
 function App() {
   const [drawOpen, setDrawOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
+  const [tasks, setTasks] = React.useState([{id: "1", content: "new ticket", startDate: "01", endDate: "02"}]);
+  const [employees, setEmployees] = React.useState([{name:"John Smith", bio:"SWE"}, {name:"Jane Doe", bio:"SWE"}]);
+  const [text, setText] = React.useState("")
+  const [title, setTitle] = React.useState("")
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleDrawerChange = () => {
     setDrawOpen(!drawOpen);
+  };
+
+  const handleTextChange = (text, title) => {
+    setText(text);
+    setTitle(title);
   };
 
   const items = ["Home", "Settings"];
@@ -33,6 +53,12 @@ function App() {
         />
       </Box>
       <div className="App" style={{ padding: 30 }}>
+        <ProfileDialog
+          open={open}
+          handleClose={handleClose}
+          text={text}
+          title={title}
+        />
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={10} justify="center">
             <Grid item xs={8}>
@@ -54,7 +80,7 @@ function App() {
                       divider={<Divider orientation="vertical" flexItem />}
                     >
                       <DateToFromPicker />
-                      <TaskTable />
+                      <TaskTable tasks={tasks}/>
                     </Stack>
                   </Stack>
                 </CardContent>
@@ -63,7 +89,7 @@ function App() {
             <Grid item xs={4}>
               <Card>
                 <CardContent>
-                  <TeamList />
+                  <TeamList handleProfile={handleClickOpen} handleBio={handleTextChange} employees={employees}/>
                 </CardContent>
               </Card>
             </Grid>
