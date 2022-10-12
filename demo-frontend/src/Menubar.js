@@ -1,18 +1,15 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import Button from "@mui/material/Button";
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
 
-export default function Menubar({ handleDrawerChange, items }) {
-
-const [anchorEl, setAnchorEl] = React.useState(null);
+export default function Menubar({ handleDrawerChange }) {
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -23,59 +20,52 @@ const [anchorEl, setAnchorEl] = React.useState(null);
   };
 
   return (
-      <AppBar position="static">
-        <Toolbar>
+    <AppBar position="static">
+      <Toolbar>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          onClick={handleDrawerChange}
+          sx={{ mr: 2 }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          Resource Manager
+        </Typography>
+        <div>
           <IconButton
             size="large"
-            edge="start"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleMenu}
             color="inherit"
-            aria-label="menu"
-            onClick={handleDrawerChange}
-            sx={{ mr: 2 }}
           >
-            <MenuIcon />
+            <AccountCircle />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Resource Manager
-          </Typography>
-          <div>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-            </Menu>
-          </div>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {items.map((item) => (
-              <Button key={item} sx={{ color: '#fff' }}>
-                {item}
-              </Button>
-            ))}
-          </Box>
-        </Toolbar>
-      </AppBar>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleClose}>My Profile</MenuItem>
+            <MenuItem onClick={handleClose}>My Tasks</MenuItem>
+          </Menu>
+        </div>
+      </Toolbar>
+    </AppBar>
   );
 }

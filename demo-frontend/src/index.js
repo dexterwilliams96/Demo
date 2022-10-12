@@ -10,6 +10,8 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
+import CssBaseline from "@mui/material/CssBaseline";
+
 /** Use dark theme from mui */
 const theme = createTheme({
   palette: {
@@ -20,6 +22,7 @@ const theme = createTheme({
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <App />
     </ThemeProvider>
   </React.StrictMode>,
