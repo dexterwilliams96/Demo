@@ -6,17 +6,15 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import Button from "@mui/material/Button";
 
-export default function Menubar() {
-  const [anchorEl, setAnchorEl] =
-    (React.useState < null) | (HTMLElement > null);
+export default function Menubar({ handleDrawerChange, items }) {
 
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -25,7 +23,6 @@ export default function Menubar() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -33,14 +30,14 @@ export default function Menubar() {
             edge="start"
             color="inherit"
             aria-label="menu"
+            onClick={handleDrawerChange}
             sx={{ mr: 2 }}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+            Resource Manager
           </Typography>
-          <Button color="inherit">Login</Button>
           <div>
             <IconButton
               size="large"
@@ -71,8 +68,14 @@ export default function Menubar() {
               <MenuItem onClick={handleClose}>My account</MenuItem>
             </Menu>
           </div>
+          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+            {items.map((item) => (
+              <Button key={item} sx={{ color: '#fff' }}>
+                {item}
+              </Button>
+            ))}
+          </Box>
         </Toolbar>
       </AppBar>
-    </Box>
   );
 }
