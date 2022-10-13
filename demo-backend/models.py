@@ -14,7 +14,12 @@ class Employee(db.Model):
     def __repr__(self):
         return f"User('{self.id}', '{self.name}', '{self.dob}')"
 
+<<<<<<< HEAD
 
+||||||| 2ed072d
+;;
+=======
+>>>>>>> 929cd1e95ea1950b85e2ec3f2bf9547aae57f63b
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), default='no name', server_default=String("pre table migration"), nullable=False)
