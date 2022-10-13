@@ -8,6 +8,12 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from "@mui/icons-material/Info";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Stack from "@mui/material/Stack";
+import TodayIcon from '@mui/icons-material/Today';
+import EventIcon from '@mui/icons-material/Event';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 export default function TaskTable({ tasks, handleInfo, handlePop }) {
   return (
@@ -31,7 +37,35 @@ export default function TaskTable({ tasks, handleInfo, handlePop }) {
                 <IconButton
                   aria-label="info"
                   onClick={() => {
-                    handleInfo(row.content, row.name);
+                    handleInfo(
+                      <Stack spacing={2}>
+                        <Card>
+                          <CardContent>
+                            <Stack spacing={2} direction="row">
+                              <TodayIcon />
+                              {row.startDate}
+                            </Stack>
+                          </CardContent>
+                        </Card>
+                        <Card>
+                          <CardContent>
+                            <Stack spacing={2} direction="row">
+                              <EventIcon />
+                              {row.endDate}
+                            </Stack>
+                          </CardContent>
+                        </Card>
+                        <Card>
+                          <CardContent>
+                            <Stack spacing={2} direction="row">
+                              <AssignmentIcon />
+                              {row.content}
+                            </Stack>
+                          </CardContent>
+                        </Card>
+                      </Stack>,
+                      row.name
+                    );
                     handlePop();
                   }}
                 >

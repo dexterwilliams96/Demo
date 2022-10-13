@@ -33,7 +33,7 @@ export default function TeamList({ handleProfile, handleBio, employees, handleTa
           <PersonSearchIcon />
         </IconButton>
       </Stack>
-      <List>
+      <List sx={{ maxHeight: 300, overflow: 'auto' }}>
         {employees.map((employee) => {
           return (
             <Profile
