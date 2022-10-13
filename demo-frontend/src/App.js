@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import "./App.css";
 import Box from "@mui/material/Box";
 import Menubar from "./Menubar";
@@ -13,6 +14,9 @@ import TeamList from "./TeamList";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import ProfileDialog from "./ProfileDialog";
+import axios from "axios";
+
+const RESOURCE_API_EMPLOYEES_GET = "http://localhost:5000/employees";
 
 function App() {
   const [drawOpen, setDrawOpen] = React.useState(true);
@@ -20,13 +24,25 @@ function App() {
   const [tasks, setTasks] = React.useState([
     { id: "1", content: "new ticket", startDate: "01", endDate: "02" },
   ]);
-  const [employees, setEmployees] = React.useState([
-    { name: "John Smith", bio: "SWE" },
-    { name: "Jane Doe", bio: "SWE" },
-  ]);
+  const [employees, setEmployees] = React.useState([]);
   const [text, setText] = React.useState("");
   const [title, setTitle] = React.useState("");
   const [target, setTarget] = React.useState("Me");
+
+  useEffect(() => {
+    getEmployees();
+  }, [employees]);
+
+  const getEmployees = () => {
+      axios
+      .get(RESOURCE_API_EMPLOYEES_GET)
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   const handleTargetChange = (val) => {
     setTarget(val);
