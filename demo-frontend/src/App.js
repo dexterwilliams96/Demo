@@ -26,11 +26,14 @@ const RESOURCE_API_TASKS_POST = "http://localhost:5000/newTask";
 function App() {
   const [drawOpen, setDrawOpen] = React.useState(true);
   const [open, setOpen] = React.useState(false);
+  const [opent, setOpenT] = React.useState(false);
   const [warnOpen, setWarnOpen] = React.useState(false);
   const [tasks, setTasks] = React.useState([]);
   const [employees, setEmployees] = React.useState([]);
   const [text, setText] = React.useState("");
   const [title, setTitle] = React.useState("");
+  const [textt, setTextT] = React.useState("");
+  const [titlet, setTitleT] = React.useState("");
   const [target, setTarget] = React.useState(["Dex", 2]);
   const [intarget, setInTarget] = React.useState(["Dex", 2]);
   const [alert, setAlert] = React.useState("Dex");
@@ -49,7 +52,7 @@ function App() {
   }, [tasks]);
 
   useEffect(() => {
-    sendTask(newtask)
+    sendTask(newtask);
   }, [newtask]);
 
   const getEmployees = () => {
@@ -67,6 +70,7 @@ function App() {
     axios
       .get(RESOURCE_API_EMPLOYEE_GET + intarget[1])
       .then(function (response) {
+      console.log(response.data)
         setTasks(response.data);
       })
       .catch(function (error) {
@@ -80,7 +84,7 @@ function App() {
     axios
       .post(RESOURCE_API_TASKS_POST, newtask)
       .then(function (response) {
-        console.log(response)
+        console.log(response);
       })
       .catch(function (error) {
         console.log(error);
@@ -103,6 +107,14 @@ function App() {
     setOpen(false);
   };
 
+  const handleClickOpenT = () => {
+    setOpenT(true);
+  };
+
+  const handleCloseT = () => {
+    setOpenT(false);
+  };
+
   const handleDrawerChange = () => {
     setDrawOpen(!drawOpen);
   };
@@ -110,6 +122,11 @@ function App() {
   const handleTextChange = (text, title) => {
     setText(text);
     setTitle(title);
+  };
+
+  const handleTextChangeT = (tx, t) => {
+    setTextT(tx);
+    setTitleT(t);
   };
 
   const handleWarnClose = (event, reason) => {
@@ -144,6 +161,12 @@ function App() {
           text={text}
           title={title}
         />
+        <ProfileDialog
+          open={opent}
+          handleClose={handleCloseT}
+          text={textt}
+          title={titlet}
+        />
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={10} justify="center">
             <Grid item xs={8}>
@@ -162,9 +185,16 @@ function App() {
                       divider={<Divider orientation="vertical" flexItem />}
                     >
                       <DateToFromPicker />
-                      <TaskTable tasks={tasks} />
+                      <TaskTable
+                        handleInfo={handleTextChangeT}
+                        handlePop={handleClickOpenT}
+                        tasks={tasks}
+                      />
                     </Stack>
-                        <TaskCreator sendTask={handleTaskChange} users={employees}/>
+                    <TaskCreator
+                      sendTask={handleTaskChange}
+                      users={employees}
+                    />
                   </Stack>
                 </CardContent>
               </Card>
@@ -173,8 +203,8 @@ function App() {
               <Card>
                 <CardContent>
                   <TeamList
-                    handleProfile={handleClickOpen}
-                    handleBio={handleTextChange}
+                    handleProfile={handleClickOpenT}
+                    handleBio={handleTextChangeT}
                     employees={employees}
                     handleTargetChange={handleTargetChange}
                   />

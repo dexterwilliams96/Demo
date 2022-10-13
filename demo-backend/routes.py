@@ -10,7 +10,7 @@ def employees():
     all_employees = Employee.query.order_by(Employee.name.desc()).all()
     response = []
     for emp in all_employees:
-        response.append({'id': emp.id, 'name': emp.name, 'dob': emp.dob})
+        response.append({'id': emp.id, 'name': emp.name, 'dob': emp.dob, 'email': emp.email})
     return response
 
 
@@ -20,7 +20,7 @@ def employee(name):
     response = {'id': emp.id, 'name': emp.name, 'dob': emp.dob}
     task_list = []
     for t in task_list:
-        task_list.append({'id': t.id, 'content': t.content, 'startDate': t.start_date, 'endDate': t.end_date})
+        task_list.append({'name': t.name, 'content': t.content, 'startDate': t.start_date, 'endDate': t.end_date})
     response['tasks'] = task_list
     return response
 
@@ -42,7 +42,7 @@ def tasksForEmployee(employee_id):
     employee_tasks = Task.query.filter_by(employee_id=employee_id).all()
     response = []
     for t in employee_tasks:
-        response.append({'content': t.content, 'startDate': t.start_date, 'endDate': t.end_date})
+        response.append({'name': t.name,'content': t.content, 'startDate': t.start_date, 'endDate': t.end_date})
     return response
 
 
@@ -52,6 +52,7 @@ def newTask():
     start_time = datetime.strptime(data['start_date'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%m/%d/%y %H:%M:%S')
     end_time = datetime.strptime(data['end_date'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%m/%d/%y %H:%M:%S')
     task = Task(
+                name=data['name'],
                 content=data['content'],
                 start_date=start_time,
                 end_date=end_time,
@@ -63,7 +64,7 @@ def newTask():
 
 @app.route('/register', methods=['POST'])
 def register(data):
-    new_employee = Employee(id=data['id'],
+    new_employee = Employee(
                            name=data['name'],
                            dob=data['dob'].strp)
     db.session.add(new_employee)

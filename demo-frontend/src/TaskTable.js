@@ -9,14 +9,14 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from "@mui/icons-material/Info";
 
-export default function TaskTable({ tasks }) {
+export default function TaskTable({ tasks, handleInfo, handlePop }) {
   return (
-    <TableContainer component={Paper} sx={{ maxHeight: 200}}>
-      <Table sx={{ minWidth: 500}} aria-label="task list">
+    <TableContainer component={Paper} sx={{ maxHeight: 200 }}>
+      <Table sx={{ minWidth: 500 }} aria-label="task list">
         <TableHead>
           <TableRow>
             <TableCell align="left">Details</TableCell>
-            <TableCell align="left">Content</TableCell>
+            <TableCell align="left">Name</TableCell>
             <TableCell align="left">Start Date</TableCell>
             <TableCell align="left">End Date</TableCell>
           </TableRow>
@@ -24,15 +24,21 @@ export default function TaskTable({ tasks }) {
         <TableBody>
           {tasks.map((row) => (
             <TableRow
-              key={row.name}
+              key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="left">
-                <IconButton aria-label="info">
+                <IconButton
+                  aria-label="info"
+                  onClick={() => {
+                    handleInfo(row.content, row.name);
+                    handlePop();
+                  }}
+                >
                   <InfoIcon />
                 </IconButton>
               </TableCell>
-              <TableCell align="left">{row.content}</TableCell>
+              <TableCell align="left">{row.name}</TableCell>
               <TableCell
                 sx={{
                   ellipsis: {
