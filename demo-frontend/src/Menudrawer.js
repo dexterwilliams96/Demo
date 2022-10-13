@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
@@ -9,10 +10,16 @@ import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 
 export default function Menudrawer({ items, drawOpen, handleDrawerChange }) {
+  const [open, setOpen] = React.useState(drawOpen)
+
+  useEffect(() => {
+    setOpen(drawOpen);
+  }, [drawOpen]);
+
   return (
     <Drawer
       variant="temporary"
-      open={drawOpen}
+      open={open}
       onClose={handleDrawerChange}
       ModalProps={{
         keepMounted: true,

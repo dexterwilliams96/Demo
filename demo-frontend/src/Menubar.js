@@ -8,7 +8,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 
-export default function Menubar({ handleDrawerChange }) {
+export default function Menubar({ handleDrawerChange, handleTargetChange, user, handleProfile, handleBio }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleMenu = (event) => {
@@ -61,8 +61,19 @@ export default function Menubar({ handleDrawerChange }) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>My Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My Tasks</MenuItem>
+            <MenuItem onClick={() => {
+            handleBio(user.bio, user.name);
+            handleProfile();
+            handleClose();
+          }}>My Profile</MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleTargetChange("Me");
+                handleClose();
+              }}
+            >
+              My Tasks
+            </MenuItem>
           </Menu>
         </div>
       </Toolbar>
