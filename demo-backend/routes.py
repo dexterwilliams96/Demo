@@ -53,16 +53,18 @@ def tasksForEmployee(employee_id):
 
 
 @app.route('/newTask', methods=['POST'])
-def newTask(data):
-    start_time = datetime.strptime(data['start_time'], '%m/%d/%y %H:%M:%S')
-    end_time = datetime.strptime(data['end_time'], '%m/%d/%y %H:%M:%S')
-    task = Task(id=data['id'],
+def newTask():
+    data = request.get_json()
+    start_time = datetime.strptime(data['start_date'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%m/%d/%y %H:%M:%S')
+    end_time = datetime.strptime(data['end_date'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%m/%d/%y %H:%M:%S')
+    task = Task(
                 content=data['content'],
                 start_date=start_time,
-                end_time=end_time,
-                employee_id=data['employee_id'])
+                end_date=end_time,
+                employee_id=data['user_id'])
     db.session.add(task)
-    db.sesson.commit()
+    db.session.commit()
+    return "{True}"
 
 
 @app.route('/register', methods=['POST'])

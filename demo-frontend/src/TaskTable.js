@@ -11,8 +11,8 @@ import InfoIcon from "@mui/icons-material/Info";
 
 export default function TaskTable({ tasks }) {
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 500 }} aria-label="task list">
+    <TableContainer component={Paper} sx={{ maxHeight: 200}}>
+      <Table sx={{ minWidth: 500}} aria-label="task list">
         <TableHead>
           <TableRow>
             <TableCell align="left">Details</TableCell>

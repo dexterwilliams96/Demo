@@ -11,15 +11,27 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { useState } from "react";
+import EmployeeDialog from "./EmployeeDialog"
 
-const steps = ["Write Task Contents", "Select Start Date", "Select End Date"];
+const steps = ["Write Task Contents", "Select Start Date", "Select End Date", "Select User"];
 
-export default function TaskCreator({ sendTask }) {
+export default function TaskCreator({ sendTask, users }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const [from, setFrom] = React.useState(dayjs("2022-04-07"));
   const [to, setTo] = React.useState(dayjs("2022-04-07"));
   const [tf, setTf] = useState("Enter Content");
+  const [open, setOpen] = useState(false);
+  const [user, setUser] = useState(-1);
+
+  const handleDialog = () => {
+    setOpen(true);
+  }
+
+  const closeDialog = (val) => {
+    setOpen(false);
+    setUser(val);
+  }
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
@@ -40,12 +52,13 @@ export default function TaskCreator({ sendTask }) {
   };
 
   const handleReset = () => {
-    sendTask({"content": tf, "start_date": to, "end_date": from});
+    sendTask({"user_id": user, "content": tf, "start_date": to, "end_date": from});
     setActiveStep(0);
   };
 
   return (
     <Box sx={{ width: "100%" }}>
+      <EmployeeDialog onClose={closeDialog} open={open} users={users}/>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
@@ -54,7 +67,7 @@ export default function TaskCreator({ sendTask }) {
             stepProps.completed = false;
           }
           return (
-            <Step key={label} {...stepProps}>
+            <Step key={label} sx={{margin: 1}}{...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
             </Step>
           );
@@ -95,6 +108,7 @@ export default function TaskCreator({ sendTask }) {
         <React.Fragment>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
+            inputFormat="MM/DD/YYYY H:m:s"
               renderInput={(props) => <TextField {...props} />}
               label="DateTimePicker"
               value={from}
@@ -118,7 +132,7 @@ export default function TaskCreator({ sendTask }) {
             </Button>
           </Box>
         </React.Fragment>
-      ) : (
+      ) : activeStep === 2 ? (
         <React.Fragment>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
@@ -128,6 +142,7 @@ export default function TaskCreator({ sendTask }) {
               onChange={(newValue) => {
                 setTo(newValue);
               }}
+              inputFormat="MM/DD/YYYY H:m:s"
             />
           </LocalizationProvider>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
@@ -145,7 +160,28 @@ export default function TaskCreator({ sendTask }) {
             </Button>
           </Box>
         </React.Fragment>
-      )}
+      ) : (<React.Fragment>
+            <Button
+              color="inherit"
+              onClick={handleDialog}
+              sx={{ mr: 1 }}
+            >
+            Select User
+            </Button>
+          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+            <Button
+              color="inherit"
+              onClick={handleBack}
+              sx={{ mr: 1 }}
+            >
+              Back
+            </Button>
+            <Box sx={{ flex: "1 1 auto" }} />
+            <Button
+              disabled={user === -1} onClick={handleNext}>
+              {activeStep === steps.length - 1 ? "Finish" : "Next"}
+            </Button>
+          </Box></React.Fragment>)}
     </Box>
   );
 }

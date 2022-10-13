@@ -21,6 +21,7 @@ export default function DateToFromPicker() {
           onChange={(newFrom) => {
             setFrom(newFrom);
           }}
+          inputFormat="MM/DD/YYYY H:m:s"
         />
         <DateTimePicker
           renderInput={(props) => <TextField {...props} />}
@@ -29,6 +30,7 @@ export default function DateToFromPicker() {
           onChange={(newTo) => {
             setTo(newTo);
           }}
+          inputFormat="MM/DD/YYYY H:m:s"
         />
         <Button variant="outlined">Submit</Button>
       </Stack>
