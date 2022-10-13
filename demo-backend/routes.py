@@ -12,17 +12,19 @@ def home():
 @app.route('/employees')
 def employees():
     allEmployees = Employee.query.order_by(Employee.name.desc()).all()
-    # return allEmployees
+    return allEmployees
 
-    # For Testing
-    print(allEmployees[0].dob)
-    return render_template('testTemplate.html', name=allEmployees)
+    # For testing route
+    # return render_template('testTemplate.html', name=allEmployees)
 
 
 @app.route('/employees/<string:name>')
 def employee(name):
     specificEmployee = Employee.query.filter_by(name=name).first_or_404()
     return specificEmployee
+
+    # For testing route
+    # return render_template('testTemplate.html', name=specificEmployee)
 
 
 @app.route('/tasks')
