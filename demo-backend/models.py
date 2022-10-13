@@ -22,8 +22,8 @@ class Employee(db.Model):
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False, default='Empty Content')
-    startDate = db.Column(db.DateTime, nullable=False)
-    endDate = db.Column(db.DateTime, nullable=False)
+    start_date = db.Column(db.DateTime, nullable=False)
+    end_date = db.Column(db.DateTime, nullable=False)
     employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=False)
     comments = db.relationship('Comment')
 
