@@ -1,4 +1,5 @@
-from flask import request, render_template
+from datetime import datetime
+from flask import request, redirect
 from app import app, db
 from models import Employee, Task, Comment
 import json
@@ -29,9 +30,6 @@ def employee(name):
     response['tasks'] = task_list
     return response
 
-    # For testing route
-    # return render_template('testTemplate.html', name=specificEmployee)
-
 
 @app.route('/tasks')
 def tasks():
@@ -53,3 +51,25 @@ def tasksForEmployee(employee_id):
         response.append({'content': t.content, 'startDate': t.start_date, 'endDate': t.end_date})
     return response
 
+
+@app.route('/newTask', methods=['POST'])
+def newTask(data):
+    start_time = datetime.strptime(data['start_time'], '%m/%d/%y %H:%M:%S')
+    end_time = datetime.strptime(data['end_time'], '%m/%d/%y %H:%M:%S')
+    task = Task(id=data['id'],
+                content=data['content'],
+                start_date=start_time,
+                end_time=end_time,
+                employee_id=data['employee_id'])
+    db.session.add(task)
+    db.sesson.commit()
+
+
+@app.route('/register', methods=['POST'])
+def register(data):
+    newEmployee = Employee(id=data['id'],
+                           name=data['name'],
+                           dob=data['dob'].strp)
+    db.session.add(newEmployee)
+    db.sesson.commit()
+    return redirect('home')

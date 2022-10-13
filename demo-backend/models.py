@@ -18,7 +18,7 @@ class Employee(db.Model):
     def __repr__(self):
         return f"User('{self.id}', '{self.name}', '{self.dob}')"
 
-
+;;
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False, default='Empty Content')
