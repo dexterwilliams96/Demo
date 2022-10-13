@@ -17,6 +17,7 @@ import ProfileDialog from "./ProfileDialog";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import TaskCreator from "./TaskCreator";
 
 const RESOURCE_API_EMPLOYEES_GET = "http://localhost:5000/employees";
 const RESOURCE_API_EMPLOYEE_GET = "http://localhost:5000/tasks/";
@@ -32,6 +33,7 @@ function App() {
   const [target, setTarget] = React.useState(["Dex", 2]);
   const [intarget, setInTarget] = React.useState(["Dex", 2]);
   const [alert, setAlert] = React.useState("Dex");
+  const [newtask, setNewTask] = React.useState({});
 
   useEffect(() => {
     getEmployees();
@@ -44,6 +46,10 @@ function App() {
   useEffect(() => {
     setTarget(intarget);
   }, [tasks]);
+
+  useEffect(() => {
+    sendTask(newtask)
+  }, [newtask]);
 
   const getEmployees = () => {
     axios
@@ -69,8 +75,25 @@ function App() {
       });
   };
 
+  const sendTask = () => {
+    axios
+      .get(RESOURCE_API_EMPLOYEE_GET + intarget[1])
+      .then(function (response) {
+        setTasks(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+        setAlert(intarget[0]);
+        setWarnOpen(true);
+      });
+  };
+
   const handleTargetChange = (val) => {
     setInTarget(val);
+  };
+
+  const handleTaskChange = (val) => {
+    setNewTask(val);
   };
 
   const handleClickOpen = () => {
@@ -131,7 +154,7 @@ function App() {
                     spacing={2}
                     divider={<Divider orientation="horizontal" flexItem />}
                   >
-                    <Typography sx={{ mt: .1, mb: .1 }} variant="h6">
+                    <Typography sx={{ mt: 0.1, mb: 0.1 }} variant="h6">
                       Tasks for {target[0]}
                     </Typography>
                     <Stack
@@ -142,6 +165,7 @@ function App() {
                       <DateToFromPicker />
                       <TaskTable tasks={tasks} />
                     </Stack>
+                        <TaskCreator sendTask={handleTaskChange}/>
                   </Stack>
                 </CardContent>
               </Card>
