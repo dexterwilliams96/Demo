@@ -41,5 +41,5 @@ def task(task_id):
 
 @app.route('/tasks/<int:employee_id>')
 def tasksForEmployee(employee_id):
-    employeeTasks = Task.query.filter_by(employee_id=employee_id).first_or_404()
+    employeeTasks = Task.query.filter_by(employee_id=employee_id).all()
     return employeeTasks
