@@ -17,6 +17,7 @@ import ProfileDialog from "./ProfileDialog";
 import axios from "axios";
 
 const RESOURCE_API_EMPLOYEES_GET = "http://localhost:5000/employees";
+const RESOURCE_API_EMPLOYEE_GET = "http://localhost:5000/employees/";
 
 function App() {
   const [drawOpen, setDrawOpen] = React.useState(true);
@@ -27,20 +28,38 @@ function App() {
   const [employees, setEmployees] = React.useState([]);
   const [text, setText] = React.useState("");
   const [title, setTitle] = React.useState("");
-  const [target, setTarget] = React.useState("Me");
+  /** Need intermediate target to handle errors without displaying. */
+  const [target, setTarget] = React.useState("Dex");
 
   useEffect(() => {
     getEmployees();
   }, [employees]);
 
+  useEffect(() => {
+    getTasks();
+  }, [target]);
+
   const getEmployees = () => {
       axios
       .get(RESOURCE_API_EMPLOYEES_GET)
       .then(function (response) {
-        console.log(response.data);
+        setEmployees(response.data);
       })
       .catch(function (error) {
         console.log(error);
+      });
+  };
+
+  const getTasks = () => {
+      axios
+      .get(RESOURCE_API_EMPLOYEE_GET + target)
+      .then(function (response) {
+        console.log(response.data)
+        setTasks(response.data.tasks);
+      })
+      .catch(function (error) {
+        console.log(error);
+        setTarget("Dex");
       });
   };
 
