@@ -68,7 +68,7 @@ export default function Menubar({ handleDrawerChange, handleTargetChange, user, 
           }}>My Profile</MenuItem>
             <MenuItem
               onClick={() => {
-                handleTargetChange("Dex");
+                handleTargetChange(["Dex", 2]);
                 handleClose();
               }}
             >

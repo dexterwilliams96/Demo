@@ -15,32 +15,38 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import ProfileDialog from "./ProfileDialog";
 import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 const RESOURCE_API_EMPLOYEES_GET = "http://localhost:5000/employees";
-const RESOURCE_API_EMPLOYEE_GET = "http://localhost:5000/employees/";
+const RESOURCE_API_EMPLOYEE_GET = "http://localhost:5000/tasks/";
 
 function App() {
   const [drawOpen, setDrawOpen] = React.useState(true);
   const [open, setOpen] = React.useState(false);
-  const [tasks, setTasks] = React.useState([
-    { id: "1", content: "new ticket", startDate: "01", endDate: "02" },
-  ]);
+  const [warnOpen, setWarnOpen] = React.useState(false);
+  const [tasks, setTasks] = React.useState([]);
   const [employees, setEmployees] = React.useState([]);
   const [text, setText] = React.useState("");
   const [title, setTitle] = React.useState("");
-  /** Need intermediate target to handle errors without displaying. */
-  const [target, setTarget] = React.useState("Dex");
+  const [target, setTarget] = React.useState(["Dex", 2]);
+  const [intarget, setInTarget] = React.useState(["Dex", 2]);
+  const [alert, setAlert] = React.useState("Dex");
 
   useEffect(() => {
     getEmployees();
-  }, [employees]);
+  }, []);
 
   useEffect(() => {
     getTasks();
-  }, [target]);
+  }, [intarget]);
+
+  useEffect(() => {
+    setTarget(intarget);
+  }, [tasks]);
 
   const getEmployees = () => {
-      axios
+    axios
       .get(RESOURCE_API_EMPLOYEES_GET)
       .then(function (response) {
         setEmployees(response.data);
@@ -51,20 +57,20 @@ function App() {
   };
 
   const getTasks = () => {
-      axios
-      .get(RESOURCE_API_EMPLOYEE_GET + target)
+    axios
+      .get(RESOURCE_API_EMPLOYEE_GET + intarget[1])
       .then(function (response) {
-        console.log(response.data)
-        setTasks(response.data.tasks);
+        setTasks(response.data);
       })
       .catch(function (error) {
         console.log(error);
-        setTarget("Dex");
+        setAlert(intarget[0]);
+        setWarnOpen(true);
       });
   };
 
   const handleTargetChange = (val) => {
-    setTarget(val);
+    setInTarget(val);
   };
 
   const handleClickOpen = () => {
@@ -82,6 +88,13 @@ function App() {
   const handleTextChange = (text, title) => {
     setText(text);
     setTitle(title);
+  };
+
+  const handleWarnClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setWarnOpen(false);
   };
 
   const items = ["Home", "Settings"];
@@ -118,8 +131,8 @@ function App() {
                     spacing={2}
                     divider={<Divider orientation="horizontal" flexItem />}
                   >
-                    <Typography sx={{ mt: 4, mb: 2 }} variant="h6">
-                      Tasks for {target}
+                    <Typography sx={{ mt: .1, mb: .1 }} variant="h6">
+                      Tasks for {target[0]}
                     </Typography>
                     <Stack
                       spacing={2}
@@ -146,6 +159,21 @@ function App() {
               </Card>
             </Grid>
           </Grid>
+          <Snackbar
+            open={warnOpen}
+            autoHideDuration={6000}
+            onClose={handleWarnClose}
+          >
+            <MuiAlert
+              elevation={6}
+              variant="filled"
+              onClose={handleWarnClose}
+              severity="warning"
+              sx={{ width: "100%" }}
+            >
+              Could not find an employee called {alert}.
+            </MuiAlert>
+          </Snackbar>
         </Box>
       </div>
     </Box>
