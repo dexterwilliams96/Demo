@@ -20,6 +20,7 @@ import MuiAlert from "@mui/material/Alert";
 import TaskCreator from "./TaskCreator";
 
 const RESOURCE_API_EMPLOYEES_GET = "http://localhost:5000/employees";
+const RESOURCE_API_EMPLOYEE_GET_NAME = "http://localhost:5000/employees/";
 const RESOURCE_API_EMPLOYEE_GET = "http://localhost:5000/tasks/";
 const RESOURCE_API_TASKS_POST = "http://localhost:5000/newTask";
 
@@ -44,7 +45,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-    getTasks();
+    if(intarget[1] !== -1) {
+        getTasks();
+    }
+    else {
+        getTasksName();
+    }
   }, [intarget]);
 
   useEffect(() => {
@@ -70,7 +76,18 @@ function App() {
     axios
       .get(RESOURCE_API_EMPLOYEE_GET + intarget[1])
       .then(function (response) {
-      console.log(response.data)
+        setTasks(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const getTasksName = () => {
+    axios
+      .get(RESOURCE_API_EMPLOYEE_GET_NAME + intarget[0])
+      .then(function (response) {
+        console.log(response.data)
         setTasks(response.data);
       })
       .catch(function (error) {

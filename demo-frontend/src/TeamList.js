@@ -27,7 +27,7 @@ export default function TeamList({ handleProfile, handleBio, employees, handleTa
         <IconButton
           aria-label="search"
           onClick={() => {
-            handleTargetChange(tf);
+            handleTargetChange([tf, -1]);
           }}
         >
           <PersonSearchIcon />

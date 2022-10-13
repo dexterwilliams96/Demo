@@ -17,12 +17,12 @@ def employees():
 @app.route('/employees/<string:name>')
 def employee(name):
     emp = Employee.query.filter_by(name=name).first_or_404()
-    response = {'id': emp.id, 'name': emp.name, 'dob': emp.dob}
+    response = {'id': emp.id, 'name': emp.name, 'dob': emp.dob, 'email': emp.email}
     task_list = []
     for t in task_list:
         task_list.append({'name': t.name, 'content': t.content, 'startDate': t.start_date, 'endDate': t.end_date})
     response['tasks'] = task_list
-    return response
+    return task_list
 
 
 # @app.route('/tasks')
