@@ -19,26 +19,23 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
 const RESOURCE_API_EMPLOYEES_GET = "http://localhost:5000/employees";
-const RESOURCE_API_EMPLOYEE_GET = "http://localhost:5000/employees/";
+const RESOURCE_API_EMPLOYEE_GET = "http://localhost:5000/tasks/";
 
 function App() {
   const [drawOpen, setDrawOpen] = React.useState(true);
   const [open, setOpen] = React.useState(false);
   const [warnOpen, setWarnOpen] = React.useState(false);
-  const [tasks, setTasks] = React.useState([
-    { id: "1", content: "new ticket", startDate: "01", endDate: "02" },
-  ]);
+  const [tasks, setTasks] = React.useState([]);
   const [employees, setEmployees] = React.useState([]);
   const [text, setText] = React.useState("");
   const [title, setTitle] = React.useState("");
-  /** Need intermediate target to handle errors without displaying. */
-  const [target, setTarget] = React.useState("Dex");
-  const [intarget, setInTarget] = React.useState("Dex");
+  const [target, setTarget] = React.useState(["Dex", 2]);
+  const [intarget, setInTarget] = React.useState(["Dex", 2]);
   const [alert, setAlert] = React.useState("Dex");
 
   useEffect(() => {
     getEmployees();
-  }, [employees]);
+  }, []);
 
   useEffect(() => {
     getTasks();
@@ -61,14 +58,13 @@ function App() {
 
   const getTasks = () => {
     axios
-      .get(RESOURCE_API_EMPLOYEE_GET + intarget)
+      .get(RESOURCE_API_EMPLOYEE_GET + intarget[1])
       .then(function (response) {
-        console.log(response.data);
-        setTasks(response.data.tasks);
+        setTasks(response.data);
       })
       .catch(function (error) {
         console.log(error);
-        setAlert(intarget);
+        setAlert(intarget[0]);
         setWarnOpen(true);
       });
   };
@@ -136,7 +132,7 @@ function App() {
                     divider={<Divider orientation="horizontal" flexItem />}
                   >
                     <Typography sx={{ mt: 4, mb: 2 }} variant="h6">
-                      Tasks for {target}
+                      Tasks for {target[0]}
                     </Typography>
                     <Stack
                       spacing={2}

@@ -10,10 +10,9 @@ import Paper from "@mui/material/Paper";
 export default function TaskTable({ tasks }) {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="task list">
+      <Table sx={{ minWidth: 500 }} aria-label="task list">
         <TableHead>
           <TableRow>
-            <TableCell align="right">ID</TableCell>
             <TableCell align="right">Content</TableCell>
             <TableCell align="right">Start Date</TableCell>
             <TableCell align="right">End Date</TableCell>
@@ -25,12 +24,9 @@ export default function TaskTable({ tasks }) {
               key={row.name}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell align="right" component="th" scope="row">
-                {row.id}
-              </TableCell>
-              <TableCell align="right">{row.content}</TableCell>
-              <TableCell align="right">{row.startDate}</TableCell>
-              <TableCell align="right">{row.endDate}</TableCell>
+              <TableCell width="10%" align="right">{row.content}</TableCell>
+              <TableCell  width="10%"align="right">{row.startDate}</TableCell>
+              <TableCell width="80%"align="right">{row.endDate}</TableCell>
             </TableRow>
           ))}
         </TableBody>

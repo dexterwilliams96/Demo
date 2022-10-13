@@ -21,7 +21,7 @@ export default function Profile({ handleBio, handleProfile, employee, handleTarg
       </ListItemAvatar>
       <ListItemText primary={employee.name} secondary={null} />
       <Button variant="outlined" onClick={() => {
-            handleTargetChange(employee.name);
+            handleTargetChange([employee.name, employee.id]);
           }}>Tasks</Button>
     </ListItem>
   );
