@@ -13,10 +13,23 @@ def home():
 @app.route('/employees')
 def employees():
     allEmployees = Employee.query.order_by(Employee.name.desc()).all()
+<<<<<<< HEAD
     response = []
     for emp in allEmployees:
         response.append({'id': emp.id, 'name': emp.name, 'dob': emp.dob})
     return response
+||||||| 09d007d
+    # return allEmployees
+
+    # For Testing
+    print(allEmployees[0].dob)
+    return render_template('testTemplate.html', name=allEmployees)
+=======
+    return allEmployees
+
+    # For testing route
+    # return render_template('testTemplate.html', name=allEmployees)
+>>>>>>> b9bdb2ccd7d4d5784b74bc80137e576bb88b816d
 
 
 @app.route('/employees/<string:name>')
