@@ -21,6 +21,7 @@ import TaskCreator from "./TaskCreator";
 
 const RESOURCE_API_EMPLOYEES_GET = "http://localhost:5000/employees";
 const RESOURCE_API_EMPLOYEE_GET = "http://localhost:5000/tasks/";
+const RESOURCE_API_TASKS_POST = "http://localhost:5000/newTask";
 
 function App() {
   const [drawOpen, setDrawOpen] = React.useState(true);
@@ -77,14 +78,12 @@ function App() {
 
   const sendTask = () => {
     axios
-      .get(RESOURCE_API_EMPLOYEE_GET + intarget[1])
+      .post(RESOURCE_API_TASKS_POST, newtask)
       .then(function (response) {
-        setTasks(response.data);
+        console.log(response)
       })
       .catch(function (error) {
         console.log(error);
-        setAlert(intarget[0]);
-        setWarnOpen(true);
       });
   };
 
@@ -165,7 +164,7 @@ function App() {
                       <DateToFromPicker />
                       <TaskTable tasks={tasks} />
                     </Stack>
-                        <TaskCreator sendTask={handleTaskChange}/>
+                        <TaskCreator sendTask={handleTaskChange} users={employees}/>
                   </Stack>
                 </CardContent>
               </Card>
