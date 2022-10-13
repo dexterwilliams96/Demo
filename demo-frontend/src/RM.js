@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import "./App.css";
 import Box from "@mui/material/Box";
 import Menubar from "./Menubar";
-import Menudrawer from "./Menudrawer";
 import Grid from "@mui/material/Grid";
 import DateToFromPicker from "./DateToFromPicker";
 import Divider from "@mui/material/Divider";
@@ -26,7 +25,6 @@ const RESOURCE_API_EMPLOYEE_GET = "http://localhost:5000/tasks/";
 const RESOURCE_API_TASKS_POST = "http://localhost:5000/newTask";
 
 export default function RM() {
-  const [drawOpen, setDrawOpen] = React.useState(true);
   const [open, setOpen] = React.useState(false);
   const [opent, setOpenT] = React.useState(false);
   const [warnOpen, setWarnOpen] = React.useState(false);
@@ -133,10 +131,6 @@ export default function RM() {
     setOpenT(false);
   };
 
-  const handleDrawerChange = () => {
-    setDrawOpen(!drawOpen);
-  };
-
   const handleTextChange = (text, title) => {
     setText(text);
     setTitle(title);
@@ -159,18 +153,12 @@ export default function RM() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Menubar
-        handleDrawerChange={handleDrawerChange}
         handleTargetChange={handleTargetChange}
         user={{ name: "Dex", bio: "SWE" }}
         handleProfile={handleClickOpen}
         handleBio={handleTextChange}
       />
       <Box>
-        <Menudrawer
-          items={items}
-          drawOpen={drawOpen}
-          handleDrawerChange={handleDrawerChange}
-        />
       </Box>
       <div className="App" style={{ padding: 30 }}>
         <ProfileDialog

@@ -8,7 +8,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 
-export default function Menubar({ handleDrawerChange, handleTargetChange, user, handleProfile, handleBio }) {
+export default function Menubar({ handleTargetChange, user, handleProfile, handleBio }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleMenu = (event) => {
@@ -22,16 +22,6 @@ export default function Menubar({ handleDrawerChange, handleTargetChange, user, 
   return (
     <AppBar position="static">
       <Toolbar>
-        <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          onClick={handleDrawerChange}
-          sx={{ mr: 2 }}
-        >
-          <MenuIcon />
-        </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Resource Manager
         </Typography>
