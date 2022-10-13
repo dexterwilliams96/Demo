@@ -5,17 +5,11 @@ from models import Employee, Task, Comment
 import json
 
 
-@app.route('/')
-def home():
-    # return
-    return render_template('testTemplate.html')
-
-
 @app.route('/employees')
 def employees():
-    allEmployees = Employee.query.order_by(Employee.name.desc()).all()
+    all_employees = Employee.query.order_by(Employee.name.desc()).all()
     response = []
-    for emp in allEmployees:
+    for emp in all_employees:
         response.append({'id': emp.id, 'name': emp.name, 'dob': emp.dob})
     return response
 
@@ -31,10 +25,10 @@ def employee(name):
     return response
 
 
-@app.route('/tasks')
-def tasks():
-    allTasks = Task.query.all()
-    return allTasks
+# @app.route('/tasks')
+# def tasks():
+#     allTasks = Task.query.all()
+#     return allTasks
 
 
 # @app.route('/tasks/<int:task_id>')
@@ -45,9 +39,9 @@ def tasks():
 
 @app.route('/tasks/<int:employee_id>')
 def tasksForEmployee(employee_id):
-    employeeTasks = Task.query.filter_by(employee_id=employee_id).all()
+    employee_tasks = Task.query.filter_by(employee_id=employee_id).all()
     response = []
-    for t in employeeTasks:
+    for t in employee_tasks:
         response.append({'content': t.content, 'startDate': t.start_date, 'endDate': t.end_date})
     return response
 
@@ -69,9 +63,9 @@ def newTask():
 
 @app.route('/register', methods=['POST'])
 def register(data):
-    newEmployee = Employee(id=data['id'],
+    new_employee = Employee(id=data['id'],
                            name=data['name'],
                            dob=data['dob'].strp)
-    db.session.add(newEmployee)
+    db.session.add(new_employee)
     db.sesson.commit()
     return redirect('home')
