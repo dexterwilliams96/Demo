@@ -91,7 +91,9 @@ export default function TaskCreator({ sendTask, users }) {
           <Typography sx={{ mt: 2, mb: 1 }}>Details Filled Out.</Typography>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleReset}>Submit</Button>
+            <Button onClick={handleReset} variant="outlined">
+              Submit
+            </Button>
           </Box>
         </React.Fragment>
       ) : activeStep === 0 ? (
@@ -101,6 +103,7 @@ export default function TaskCreator({ sendTask, users }) {
             multiline
             rows={1}
             onChange={(e) => setTf(e.target.value)}
+            variant="standard"
           />
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
@@ -108,11 +111,12 @@ export default function TaskCreator({ sendTask, users }) {
               disabled={activeStep === 0}
               onClick={handleBack}
               sx={{ mr: 1 }}
+              variant="outlined"
             >
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleNext}>
+            <Button onClick={handleNext} variant="outlined">
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
           </Box>
@@ -124,6 +128,7 @@ export default function TaskCreator({ sendTask, users }) {
             multiline
             rows={2}
             onChange={(e) => setTf2(e.target.value)}
+            variant="standard"
           />
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
@@ -131,11 +136,12 @@ export default function TaskCreator({ sendTask, users }) {
               disabled={activeStep === 0}
               onClick={handleBack}
               sx={{ mr: 1 }}
+              variant="outlined"
             >
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleNext}>
+            <Button onClick={handleNext} variant="outlined">
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
           </Box>
@@ -159,11 +165,12 @@ export default function TaskCreator({ sendTask, users }) {
               disabled={activeStep === 0}
               onClick={handleBack}
               sx={{ mr: 1 }}
+              variant="outlined"
             >
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleNext}>
+            <Button onClick={handleNext} variant="outlined">
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
           </Box>
@@ -187,26 +194,41 @@ export default function TaskCreator({ sendTask, users }) {
               disabled={activeStep === 0}
               onClick={handleBack}
               sx={{ mr: 1 }}
+              variant="outlined"
             >
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleNext}>
+            <Button onClick={handleNext} variant="outlined">
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
           </Box>
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <Button color="inherit" onClick={handleDialog} sx={{ mr: 1 }}>
+          <Button
+            color="inherit"
+            onClick={handleDialog}
+            sx={{ mr: 1 }}
+            variant="outlined"
+          >
             Select User
           </Button>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
+            <Button
+              color="inherit"
+              onClick={handleBack}
+              sx={{ mr: 1 }}
+              variant="outlined"
+            >
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-            <Button disabled={user === -1} onClick={handleNext}>
+            <Button
+              disabled={user === -1}
+              onClick={handleNext}
+              variant="outlined"
+            >
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
           </Box>
