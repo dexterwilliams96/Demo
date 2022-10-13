@@ -13,7 +13,7 @@ export default function TeamList({ handleProfile, handleBio, employees, handleTa
   const [tf, setTf] = useState("Find Employee");
 
   return (
-    <Stack spacing={2} divider={<Divider orientation="horizontal" flexItem />}>
+    <Stack spacing={2} divider={<Divider orientation="horizontal"/>}>
       <Typography sx={{ mt: 4, mb: 2 }} variant="h6">
         Employees
       </Typography>

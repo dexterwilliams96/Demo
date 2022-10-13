@@ -131,7 +131,7 @@ function App() {
                     spacing={2}
                     divider={<Divider orientation="horizontal" flexItem />}
                   >
-                    <Typography sx={{ mt: 4, mb: 2 }} variant="h6">
+                    <Typography sx={{ mt: .1, mb: .1 }} variant="h6">
                       Tasks for {target[0]}
                     </Typography>
                     <Stack
