@@ -28,6 +28,7 @@ function App() {
   const [employees, setEmployees] = React.useState([]);
   const [text, setText] = React.useState("");
   const [title, setTitle] = React.useState("");
+  /** Need intermediate target to handle errors without displaying. */
   const [target, setTarget] = React.useState("Dex");
 
   useEffect(() => {
@@ -58,6 +59,7 @@ function App() {
       })
       .catch(function (error) {
         console.log(error);
+        setTarget("Dex");
       });
   };
 
