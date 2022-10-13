@@ -60,7 +60,7 @@ function App() {
         handleProfile={handleClickOpen}
         handleBio={handleTextChange}
       />
-      <Box component="nav">
+      <Box>
         <Menudrawer
           items={items}
           drawOpen={drawOpen}

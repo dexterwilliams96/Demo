@@ -16,7 +16,7 @@ export default function TeamList({ handleProfile, handleBio, employees, handleTa
       </Typography>
       <Stack spacing={1} direction="row">
         <TextField
-          id="standard-basic"
+          id="find-employee"
           label="Find Employee"
           variant="standard"
         />

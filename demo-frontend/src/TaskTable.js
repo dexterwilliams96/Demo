@@ -10,7 +10,7 @@ import Paper from "@mui/material/Paper";
 export default function TaskTable({ tasks }) {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table sx={{ minWidth: 650 }} aria-label="task list">
         <TableHead>
           <TableRow>
             <TableCell align="right">ID</TableCell>
