@@ -3,6 +3,7 @@ from flask import request, redirect
 from app import app, db
 from models import Employee, Task, Comment
 import json
+from flask_sqlalchemy import exc
 
 
 @app.route('/employees')
@@ -42,7 +43,7 @@ def tasksForEmployee(employee_id):
     employee_tasks = Task.query.filter_by(employee_id=employee_id).all()
     response = []
     for t in employee_tasks:
-        response.append({'name': t.name,'content': t.content, 'startDate': t.start_date, 'endDate': t.end_date})
+        response.append({'name': t.name, 'content': t.content, 'startDate': t.start_date, 'endDate': t.end_date})
     return response
 
 
@@ -52,32 +53,38 @@ def newTask():
     start_time = datetime.strptime(data['start_date'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%m/%d/%y %H:%M:%S')
     end_time = datetime.strptime(data['end_date'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%m/%d/%y %H:%M:%S')
     task = Task(
-                name=data['name'],
-                content=data['content'],
-                start_date=start_time,
-                end_date=end_time,
-                employee_id=data['user_id'])
+        name=data['name'],
+        content=data['content'],
+        start_date=start_time,
+        end_date=end_time,
+        employee_id=data['user_id'])
     db.session.add(task)
     db.session.commit()
-    return "{True}"
+    return ""
 
 
 @app.route('/register', methods=['POST'])
 def register(data):
     dob = datetime.strptime(data['dob'], '%Y-%m-%d').strftime('%m/%d/%y')
+    hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
     new_employee = Employee(
-                           email=data['email'],
-                           password=data['password'],
-                           name=data['name'],
-                           dob=dob)
+        email=data['email'],
+        password=hashed_password,
+        name=data['name'],
+        dob=dob)
     db.session.add(new_employee)
-    db.sesson.commit()
-    return redirect('home')
+    try:
+        db.sesson.commit()
+        return True
+    except exc.SQLAlchemyError:
+        return False
+
 
 @app.route('/signin', methods=['POST'])
 def signin(data):
-    # data will contain username and password
-    # check if user with those deets exists
-    # if it does return a dict: {id: userid, name: username}
-    # Else return empty dict
-    return {}
+    verifiedEmployee = Employee.query.filter_by(email=data['email']).first()
+    if verifiedEmployee and bcrypt.check_password_hash(verifiedEmployee.password, data['password']):
+        employeeDict = {'id': verifiedEmployee.id, 'name': verifiedEmployee.name}
+        return employeeDict
+    else:
+        return {}

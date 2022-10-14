@@ -2,6 +2,7 @@ from flask_cors import CORS
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 CORS(app)
@@ -11,5 +12,6 @@ app.config[
 app.config['SECRET_KEY'] = "resource-manager-demo"
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+bcrypt = Bcrypt(app)
 
 from routes import *
