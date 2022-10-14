@@ -40,6 +40,21 @@ export default function RM({ token, setToken }) {
   const [alert, setAlert] = React.useState("Dex");
   const [newtask, setNewTask] = React.useState({});
   const [change, setChange] = React.useState(false);
+  const [delopen, setDelOpen] = React.useState(false);
+  const [addopen, setAddOpen] = React.useState(false);
+
+  const handleDelClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setDelOpen(false);
+  };
+  const handleAddClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAddOpen(false);
+  };
 
   useEffect(() => {
     getEmployees();
@@ -58,10 +73,10 @@ export default function RM({ token, setToken }) {
   }, [tasks]);
 
   useEffect(() => {
-     if(change) {
-        getTasks();
-        setChange(false);
-     }
+    if (change) {
+      getTasks();
+      setChange(false);
+    }
   }, [change]);
 
   useEffect(() => {
@@ -110,6 +125,7 @@ export default function RM({ token, setToken }) {
       .then(function (response) {
         console.log(response);
         setChange(true);
+        setAddOpen(true);
       })
       .catch(function (error) {
         console.log(error);
@@ -206,6 +222,7 @@ export default function RM({ token, setToken }) {
                           handlePop={handleClickOpenT}
                           taskList={tasks}
                           setChange={setChange}
+                          setDelOpen={setDelOpen}
                         />
                       </Stack>
                       <TaskCreator
@@ -242,6 +259,36 @@ export default function RM({ token, setToken }) {
                 sx={{ width: "100%" }}
               >
                 Could not find an employee called {alert}.
+              </MuiAlert>
+            </Snackbar>
+            <Snackbar
+              open={delopen}
+              autoHideDuration={6000}
+              onClose={handleDelClose}
+            >
+              <MuiAlert
+                elevation={6}
+                variant="filled"
+                onClose={handleDelClose}
+                severity="success"
+                sx={{ width: "100%" }}
+              >
+                Task deleted.
+              </MuiAlert>
+            </Snackbar>
+            <Snackbar
+              open={addopen}
+              autoHideDuration={6000}
+              onClose={handleAddClose}
+            >
+              <MuiAlert
+                elevation={6}
+                variant="filled"
+                onClose={handleAddClose}
+                severity="success"
+                sx={{ width: "100%" }}
+              >
+                Task added.
               </MuiAlert>
             </Snackbar>
           </Box>

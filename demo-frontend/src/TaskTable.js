@@ -25,6 +25,7 @@ export default function TaskTable({
   handleInfo,
   handlePop,
   setChange,
+  setDelOpen
 }) {
   const [tasks, setTasks] = React.useState(taskList);
 
@@ -38,6 +39,7 @@ export default function TaskTable({
       .then(function (response) {
         console.log(response);
         setChange(true);
+        setDelOpen(true);
       })
       .catch(function (error) {
         console.log(error);
