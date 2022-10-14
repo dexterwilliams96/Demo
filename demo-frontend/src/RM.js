@@ -25,7 +25,7 @@ const RESOURCE_API_EMPLOYEE_GET_NAME = "http://localhost:5000/employees/";
 const RESOURCE_API_EMPLOYEE_GET = "http://localhost:5000/tasks/";
 const RESOURCE_API_TASKS_POST = "http://localhost:5000/newTask";
 
-export default function RM() {
+export default function RM({ token, setToken }) {
   const [open, setOpen] = React.useState(false);
   const [opent, setOpenT] = React.useState(false);
   const [warnOpen, setWarnOpen] = React.useState(false);
@@ -35,8 +35,8 @@ export default function RM() {
   const [title, setTitle] = React.useState("");
   const [textt, setTextT] = React.useState("");
   const [titlet, setTitleT] = React.useState("");
-  const [target, setTarget] = React.useState(["Dex", 2]);
-  const [intarget, setInTarget] = React.useState(["Dex", 2]);
+  const [target, setTarget] = React.useState([token.name, token.id]);
+  const [intarget, setInTarget] = React.useState([token.name, token.id]);
   const [alert, setAlert] = React.useState("Dex");
   const [newtask, setNewTask] = React.useState({});
 
@@ -158,6 +158,7 @@ export default function RM() {
         user={{ name: "Dex", bio: "SWE" }}
         handleProfile={handleClickOpen}
         handleBio={handleTextChange}
+        token={token}
       />
       <Box>
       </Box>

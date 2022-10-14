@@ -9,7 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { Link } from "react-router-dom";
 
-export default function Menubar({ handleTargetChange, user, handleProfile, handleBio }) {
+export default function Menubar({ handleTargetChange, user, handleProfile, handleBio, token, setToken }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleMenu = (event) => {
@@ -59,14 +59,16 @@ export default function Menubar({ handleTargetChange, user, handleProfile, handl
           }}>My Profile</MenuItem>
             <MenuItem
               onClick={() => {
-                handleTargetChange(["Dex", 2]);
+                handleTargetChange([token.name, token.id]);
                 handleClose();
               }}
             >
               My Tasks
             </MenuItem>
             <MenuItem
-              component={Link} to="/"
+            onClick={() => {
+                setToken()
+              }}
             >
               Sign out
             </MenuItem>
