@@ -21,7 +21,7 @@ def employee(name):
     response = {'id': emp.id, 'name': emp.name, 'dob': emp.dob, 'email': emp.email}
     task_list = []
     for t in task_list:
-        task_list.append({'name': t.name, 'content': t.content, 'startDate': t.start_date, 'endDate': t.end_date})
+        task_list.append({'id': t.id, 'name': t.name, 'content': t.content, 'startDate': t.start_date, 'endDate': t.end_date})
     response['tasks'] = task_list
     return task_list
 
@@ -43,7 +43,7 @@ def tasksForEmployee(employee_id):
     employee_tasks = Task.query.filter_by(employee_id=employee_id).all()
     response = []
     for t in employee_tasks:
-        response.append({'name': t.name, 'content': t.content, 'startDate': t.start_date, 'endDate': t.end_date})
+        response.append({'id': t.id, 'name': t.name, 'content': t.content, 'startDate': t.start_date, 'endDate': t.end_date})
     return response
 
 
@@ -64,11 +64,15 @@ def newTask():
 
 
 @app.route('/deleteTask', methods=['POST'])
-def deleteTask(employeeId):
-    task = Task.query.filter_by(id=employeeId).first()
+def deleteTask():
+    data = request.get_json()
+    print(data)
+    task = Task.query.filter_by(id=data['id']).first()
     if task:
         db.session.delete(task)
         db.session.commit()
+        return "true"
+    return "false"
 
 
 @app.route('/register', methods=['POST'])

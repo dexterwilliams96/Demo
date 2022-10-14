@@ -254,7 +254,7 @@ export default function SignIn({ token, setToken }) {
           severity="success"
           sx={{ width: "100%" }}
         >
-          Login success.
+          Registered.
         </MuiAlert>
       </Snackbar>
     </Grid>

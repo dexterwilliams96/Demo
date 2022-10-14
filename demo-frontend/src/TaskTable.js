@@ -11,17 +11,47 @@ import InfoIcon from "@mui/icons-material/Info";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
-import TodayIcon from '@mui/icons-material/Today';
-import EventIcon from '@mui/icons-material/Event';
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import TodayIcon from "@mui/icons-material/Today";
+import EventIcon from "@mui/icons-material/Event";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import DeleteIcon from "@mui/icons-material/Delete";
+import axios from "axios";
+import { useEffect } from "react";
 
-export default function TaskTable({ tasks, handleInfo, handlePop }) {
+const RESOURCE_API_DEL_TASK = "http://localhost:5000/deleteTask";
+
+export default function TaskTable({
+  taskList,
+  handleInfo,
+  handlePop,
+  setChange,
+  setDelOpen
+}) {
+  const [tasks, setTasks] = React.useState(taskList);
+
+  useEffect(() => {
+    setTasks(taskList);
+  }, [taskList]);
+
+  const deleteTask = (data) => {
+    axios
+      .post(RESOURCE_API_DEL_TASK, data)
+      .then(function (response) {
+        console.log(response);
+        setChange(true);
+        setDelOpen(true);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <TableContainer component={Paper} sx={{ maxHeight: 200 }}>
       <Table sx={{ minWidth: 500 }} aria-label="task list">
         <TableHead>
           <TableRow>
-            <TableCell align="left">Details</TableCell>
+            <TableCell align="left">Options</TableCell>
             <TableCell align="left">Name</TableCell>
             <TableCell align="left">Start Date</TableCell>
             <TableCell align="left">End Date</TableCell>
@@ -70,6 +100,14 @@ export default function TaskTable({ tasks, handleInfo, handlePop }) {
                   }}
                 >
                   <InfoIcon />
+                </IconButton>
+                <IconButton
+                  aria-label="del"
+                  onClick={() => {
+                    deleteTask({id: row.id});
+                  }}
+                >
+                  <DeleteIcon />
                 </IconButton>
               </TableCell>
               <TableCell align="left">{row.name}</TableCell>
