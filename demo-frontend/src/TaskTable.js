@@ -85,7 +85,6 @@ export default function TaskTable({
                   aria-label="info"
                   onClick={() => {
                     changeComments(row.id);
-                    handlePop();
                     handleInfo(
                       <Stack
                         spacing={2}
@@ -175,6 +174,7 @@ export default function TaskTable({
                       </Stack>,
                       row.name
                     );
+                    handlePop();
                   }}
                 >
                   <InfoIcon />
