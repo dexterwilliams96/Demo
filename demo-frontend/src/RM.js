@@ -155,10 +155,10 @@ export default function RM({ token, setToken }) {
     <Box sx={{ flexGrow: 1 }}>
       <Menubar
         handleTargetChange={handleTargetChange}
-        user={{ name: "Dex", bio: "SWE" }}
         handleProfile={handleClickOpen}
         handleBio={handleTextChange}
         token={token}
+        setToken={setToken}
       />
       <Box>
       </Box>

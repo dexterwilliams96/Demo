@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -8,8 +9,20 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { Link } from "react-router-dom";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Stack from "@mui/material/Stack";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import EmailIcon from "@mui/icons-material/Email";
+import { useNavigate } from "react-router-dom";
 
-export default function Menubar({ handleTargetChange, user, handleProfile, handleBio, token, setToken }) {
+export default function Menubar({
+  handleTargetChange,
+  handleProfile,
+  handleBio,
+  token,
+  setToken
+}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleMenu = (event) => {
@@ -19,6 +32,18 @@ export default function Menubar({ handleTargetChange, user, handleProfile, handl
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
+  }, [token]);
+
+  const signOut = () => {
+    setToken(null);
+  }
 
   return (
     <AppBar position="static">
@@ -52,11 +77,35 @@ export default function Menubar({ handleTargetChange, user, handleProfile, handl
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={() => {
-            handleBio(user.bio, user.name);
-            handleProfile();
-            handleClose();
-          }}>My Profile</MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleBio(
+                  <Stack spacing={2}>
+                    <Card>
+                      <CardContent>
+                        <Stack spacing={2} direction="row">
+                          <CalendarMonthIcon />
+                          {token.dob}
+                        </Stack>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent>
+                        <Stack spacing={2} direction="row">
+                          <EmailIcon />
+                          {token.email}
+                        </Stack>
+                      </CardContent>
+                    </Card>
+                  </Stack>,
+                  token.name
+                );
+                handleProfile();
+                handleClose();
+              }}
+            >
+              My Profile
+            </MenuItem>
             <MenuItem
               onClick={() => {
                 handleTargetChange([token.name, token.id]);
@@ -65,13 +114,7 @@ export default function Menubar({ handleTargetChange, user, handleProfile, handl
             >
               My Tasks
             </MenuItem>
-            <MenuItem
-            onClick={() => {
-                setToken()
-              }}
-            >
-              Sign out
-            </MenuItem>
+            <MenuItem onClick={signOut}>Sign out</MenuItem>
           </Menu>
         </div>
       </Toolbar>

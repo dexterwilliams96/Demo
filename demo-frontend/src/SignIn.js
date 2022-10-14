@@ -19,10 +19,12 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const RESOURCE_API_SIGNIN = "http://localhost:5000/signin";
+const RESOURCE_API_REGISTER = "http://localhost:5000/register";
 
-export default function SignIn({ setToken }) {
+export default function SignIn({ token, setToken }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -30,6 +32,15 @@ export default function SignIn({ setToken }) {
   const [name, setName] = React.useState("");
   const [passwordr, setPasswordR] = React.useState("");
   const [dob, setDob] = React.useState(dayjs("2022-04-07"));
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(token) {
+       navigate('/RM');
+    }
+  }, [token]);
+
 
   const signIn = (credentials) => {
     axios
@@ -42,12 +53,33 @@ export default function SignIn({ setToken }) {
       });
   };
 
+  const register = (credentials) => {
+    axios
+      .post(RESOURCE_API_REGISTER, credentials)
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   const handleSubmit = () => {
     const credentials = {
       email: email,
       password: password,
     };
     signIn(credentials);
+  };
+
+  const handleRegister = () => {
+    const credentials = {
+      email: emailr,
+      password: passwordr,
+      name: name,
+      dob: dob
+    };
+    register(credentials);
   };
 
   return (
@@ -80,7 +112,7 @@ export default function SignIn({ setToken }) {
                     label={email}
                     onChange={(e) => setEmail(e.target.value)}
                     variant="standard"
-                    placeholder='Email'
+                    placeholder="Email"
                   />
                   <TextField
                     id="password"
@@ -88,7 +120,7 @@ export default function SignIn({ setToken }) {
                     variant="standard"
                     onChange={(e) => setPassword(e.target.value)}
                     type="password"
-                    placeholder='Password'
+                    placeholder="Password"
                   />
                   <IconButton
                     disabled={password === "" || email === ""}
@@ -111,7 +143,7 @@ export default function SignIn({ setToken }) {
                         label={emailr}
                         onChange={(e) => setEmailR(e.target.value)}
                         variant="standard"
-                        placeholder='Email'
+                        placeholder="Email"
                       />
                       <TextField
                         id="passwordr"
@@ -119,9 +151,15 @@ export default function SignIn({ setToken }) {
                         onChange={(e) => setPasswordR(e.target.value)}
                         variant="standard"
                         type="password"
-                        placeholder='Password'
+                        placeholder="Password"
                       />
-                      <TextField placeholder='Name' id="name" label={name} onChange={(e) => setName(e.target.value)} variant="standard" />
+                      <TextField
+                        placeholder="Name"
+                        id="name"
+                        label={name}
+                        onChange={(e) => setName(e.target.value)}
+                        variant="standard"
+                      />
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                           inputFormat="MM/DD/YYYY"
@@ -133,7 +171,12 @@ export default function SignIn({ setToken }) {
                           }}
                         />
                       </LocalizationProvider>
-                      <IconButton disabled={passwordr === "" || emailr === "" || name === ""}>
+                      <IconButton
+                        disabled={
+                          passwordr === "" || emailr === "" || name === ""
+                        }
+                        onClick={handleRegister}
+                      >
                         <HowToRegIcon />
                       </IconButton>
                     </Stack>
