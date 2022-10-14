@@ -72,8 +72,9 @@ def deleteTask(employeeId):
 
 
 @app.route('/register', methods=['POST'])
-def register(data):
-    dob = datetime.strptime(data['dob'], '%Y-%m-%d').strftime('%m/%d/%y')
+def register():
+    data = request.get_json()
+    dob = datetime.strptime(data['dob'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%m/%d/%y')
     hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
     new_employee = Employee(
         email=data['email'],
@@ -82,18 +83,19 @@ def register(data):
         dob=dob)
     db.session.add(new_employee)
     try:
-        db.sesson.commit()
-        return True
+        db.session.commit()
+        return "True"
     except exc.SQLAlchemyError:
         db.session.rollback()
-        return False
+        return "False"
 
 
 @app.route('/signin', methods=['POST'])
-def signin(data):
+def signin():
+    data = request.get_json()
     verifiedEmployee = Employee.query.filter_by(email=data['email']).first()
     if verifiedEmployee and bcrypt.check_password_hash(verifiedEmployee.password, data['password']):
-        employeeDict = {'id': verifiedEmployee.id, 'name': verifiedEmployee.name}
+        employeeDict = {'id': verifiedEmployee.id, 'name': verifiedEmployee.name, 'dob': verifiedEmployee.dob, 'email': verifiedEmployee.email}
         return employeeDict
     else:
         return {}
