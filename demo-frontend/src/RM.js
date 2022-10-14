@@ -18,7 +18,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import TaskCreator from "./TaskCreator";
 import { Link } from "react-router-dom";
-import Slide from '@mui/material/Slide';
+import Slide from "@mui/material/Slide";
 
 const RESOURCE_API_EMPLOYEES_GET = "http://localhost:5000/employees";
 const RESOURCE_API_EMPLOYEE_GET_NAME = "http://localhost:5000/employees/";
@@ -45,11 +45,10 @@ export default function RM({ token, setToken }) {
   }, []);
 
   useEffect(() => {
-    if(intarget[1] !== -1) {
-        getTasks();
-    }
-    else {
-        getTasksName();
+    if (intarget[1] !== -1) {
+      getTasks();
+    } else {
+      getTasksName();
     }
   }, [intarget]);
 
@@ -87,7 +86,7 @@ export default function RM({ token, setToken }) {
     axios
       .get(RESOURCE_API_EMPLOYEE_GET_NAME + intarget[0])
       .then(function (response) {
-        console.log(response.data)
+        console.log(response.data);
         setTasks(response.data);
       })
       .catch(function (error) {
@@ -160,84 +159,83 @@ export default function RM({ token, setToken }) {
         token={token}
         setToken={setToken}
       />
-      <Box>
-      </Box>
+      <Box></Box>
       <Slide direction="up" in={true} mountOnEnter unmountOnExit timeout={500}>
-      <div className="App" style={{ padding: 30 }}>
-        <ProfileDialog
-          open={open}
-          handleClose={handleClose}
-          text={text}
-          title={title}
-        />
-        <ProfileDialog
-          open={opent}
-          handleClose={handleCloseT}
-          text={textt}
-          title={titlet}
-        />
-        <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={10} justify="center">
-            <Grid item xs={8}>
-              <Card sx={{ minWidth: 50 }}>
-                <CardContent>
-                  <Stack
-                    spacing={2}
-                    divider={<Divider orientation="horizontal" flexItem />}
-                  >
-                    <Typography sx={{ mt: 0.1, mb: 0.1 }} variant="h6">
-                      Tasks for {target[0]}
-                    </Typography>
+        <div className="App" style={{ padding: 30 }}>
+          <ProfileDialog
+            open={open}
+            handleClose={handleClose}
+            text={text}
+            title={title}
+          />
+          <ProfileDialog
+            open={opent}
+            handleClose={handleCloseT}
+            text={textt}
+            title={titlet}
+          />
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={10} justify="center">
+              <Grid item xs={8}>
+                <Card sx={{ minWidth: 50 }}>
+                  <CardContent>
                     <Stack
                       spacing={2}
-                      direction="row"
-                      divider={<Divider orientation="vertical" flexItem />}
+                      divider={<Divider orientation="horizontal" flexItem />}
                     >
-                      <DateToFromPicker />
-                      <TaskTable
-                        handleInfo={handleTextChangeT}
-                        handlePop={handleClickOpenT}
-                        tasks={tasks}
+                      <Typography sx={{ mt: 0.1, mb: 0.1 }} variant="h6">
+                        Tasks for {target[0]}
+                      </Typography>
+                      <Stack
+                        spacing={2}
+                        direction="row"
+                        divider={<Divider orientation="vertical" flexItem />}
+                      >
+                        <DateToFromPicker />
+                        <TaskTable
+                          handleInfo={handleTextChangeT}
+                          handlePop={handleClickOpenT}
+                          tasks={tasks}
+                        />
+                      </Stack>
+                      <TaskCreator
+                        sendTask={handleTaskChange}
+                        users={employees}
                       />
                     </Stack>
-                    <TaskCreator
-                      sendTask={handleTaskChange}
-                      users={employees}
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={4}>
+                <Card>
+                  <CardContent>
+                    <TeamList
+                      handleProfile={handleClickOpenT}
+                      handleBio={handleTextChangeT}
+                      employees={employees}
+                      handleTargetChange={handleTargetChange}
                     />
-                  </Stack>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </Grid>
             </Grid>
-            <Grid item xs={4}>
-              <Card>
-                <CardContent>
-                  <TeamList
-                    handleProfile={handleClickOpenT}
-                    handleBio={handleTextChangeT}
-                    employees={employees}
-                    handleTargetChange={handleTargetChange}
-                  />
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
-          <Snackbar
-            open={warnOpen}
-            autoHideDuration={6000}
-            onClose={handleWarnClose}
-          >
-            <MuiAlert
-              elevation={6}
-              variant="filled"
+            <Snackbar
+              open={warnOpen}
+              autoHideDuration={6000}
               onClose={handleWarnClose}
-              severity="warning"
-              sx={{ width: "100%" }}
             >
-              Could not find an employee called {alert}.
-            </MuiAlert>
-          </Snackbar>
-        </Box>
-      </div>
+              <MuiAlert
+                elevation={6}
+                variant="filled"
+                onClose={handleWarnClose}
+                severity="warning"
+                sx={{ width: "100%" }}
+              >
+                Could not find an employee called {alert}.
+              </MuiAlert>
+            </Snackbar>
+          </Box>
+        </div>
       </Slide>
     </Box>
   );

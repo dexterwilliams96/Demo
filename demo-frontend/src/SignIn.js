@@ -20,6 +20,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 const RESOURCE_API_SIGNIN = "http://localhost:5000/signin";
 const RESOURCE_API_REGISTER = "http://localhost:5000/register";
@@ -33,23 +35,32 @@ export default function SignIn({ token, setToken }) {
   const [passwordr, setPasswordR] = React.useState("");
   const [dob, setDob] = React.useState(dayjs("2022-04-07"));
 
+  const [sropen, setSROpen] = React.useState(false);
+  const [wropen, setWROpen] = React.useState(false);
+  const [wlopen, setWLOpen] = React.useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(token) {
-       navigate('/RM');
+    if (token) {
+      navigate("/RM");
     }
   }, [token]);
-
 
   const signIn = (credentials) => {
     axios
       .post(RESOURCE_API_SIGNIN, credentials)
       .then(function (response) {
-        setToken(response.data);
+        if(response.data !== false) {
+            setToken(response.data);
+        }
+        else {
+            setWLOpen(true);
+        }
       })
       .catch(function (error) {
         console.log(error);
+        setWLOpen(true);
       });
   };
 
@@ -57,10 +68,17 @@ export default function SignIn({ token, setToken }) {
     axios
       .post(RESOURCE_API_REGISTER, credentials)
       .then(function (response) {
-        console.log(response.data);
+        if(response.data) {
+            console.log(response.data);
+            setSROpen(true);
+        }
+        else {
+            setWROpen(true);
+        }
       })
       .catch(function (error) {
         console.log(error);
+        setWROpen(true);
       });
   };
 
@@ -77,9 +95,28 @@ export default function SignIn({ token, setToken }) {
       email: emailr,
       password: passwordr,
       name: name,
-      dob: dob
+      dob: dob,
     };
     register(credentials);
+  };
+
+  const handleWLClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setWLOpen(false);
+  };
+  const handleSRClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSROpen(false);
+  };
+  const handleWRClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setWROpen(false);
   };
 
   return (
@@ -187,7 +224,39 @@ export default function SignIn({ token, setToken }) {
           </Card>
         </Grow>
       </Grid>
-      
+      <Snackbar open={wlopen} autoHideDuration={6000} onClose={handleWLClose}>
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleWLClose}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Login failed.
+        </MuiAlert>
+      </Snackbar>
+      <Snackbar open={wropen} autoHideDuration={6000} onClose={handleWRClose}>
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleWRClose}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Could not register with those details.
+        </MuiAlert>
+      </Snackbar>
+      <Snackbar open={sropen} autoHideDuration={6000} onClose={handleSRClose}>
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleSRClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Login success.
+        </MuiAlert>
+      </Snackbar>
     </Grid>
   );
 }

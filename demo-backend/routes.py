@@ -84,10 +84,10 @@ def register():
     db.session.add(new_employee)
     try:
         db.session.commit()
-        return "True"
+        return "true"
     except exc.SQLAlchemyError:
         db.session.rollback()
-        return "False"
+        return "false"
 
 
 @app.route('/signin', methods=['POST'])
@@ -98,4 +98,4 @@ def signin():
         employeeDict = {'id': verifiedEmployee.id, 'name': verifiedEmployee.name, 'dob': verifiedEmployee.dob, 'email': verifiedEmployee.email}
         return employeeDict
     else:
-        return {}
+        return "false"
