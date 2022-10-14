@@ -84,10 +84,10 @@ def register():
     db.session.add(new_employee)
     try:
         db.session.commit()
-        return "True"
+        return "true"
     except exc.SQLAlchemyError:
         db.session.rollback()
-        return "False"
+        return "false"
 
 
 @app.route('/signin', methods=['POST'])
@@ -95,7 +95,40 @@ def signin():
     data = request.get_json()
     verifiedEmployee = Employee.query.filter_by(email=data['email']).first()
     if verifiedEmployee and bcrypt.check_password_hash(verifiedEmployee.password, data['password']):
-        employeeDict = {'id': verifiedEmployee.id, 'name': verifiedEmployee.name, 'dob': verifiedEmployee.dob, 'email': verifiedEmployee.email}
+        employeeDict = {'id': verifiedEmployee.id, 'name': verifiedEmployee.name, 'dob': verifiedEmployee.dob,
+                        'email': verifiedEmployee.email}
         return employeeDict
     else:
-        return {}
+        return "false"
+
+
+@app.route('/getComments')
+def getComments(task):
+    comments = Comment.query.filter_by(task_id=task).all()
+    response = []
+    for comment in comments:
+        response.append({'content': comment.content, 'date_posted': comment.date_posted,
+                         'employee_id': comment.employee_id})
+    return response
+
+
+@app.route('/addCommentToTask', methods=['POST'])
+def addComment(task):
+    data = request.get_json()
+    date_posted = datetime.strptime(data['date_posted'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%m/%d/%y %H:%M:%S')
+    newComment = Comment(
+        content=data['content'],
+        date_posted=date_posted,
+        task_id=data['task_id'],
+        employee_id=data['employee_id'])
+    db.session.add(newComment)
+    db.session.commit()
+    return ""
+
+
+@app.route('/deleteComment', methods=['POST'])
+def deleteComment(comment_id):
+    commentToDelete = Comment.query.filter_by(id=comment_id).first()
+    if task:
+        db.session.delete(commentToDelete)
+        db.session.commit()
