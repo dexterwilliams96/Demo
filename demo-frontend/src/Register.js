@@ -7,14 +7,18 @@ import "./App.css";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
-import LoginIcon from "@mui/icons-material/Login";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Grow from "@mui/material/Grow";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
-import { Link } from 'react-router-dom';
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { useState } from "react";
 
-export default function SignIn() {
+export default function Register() {
+  const [dob, setDob] = React.useState(dayjs("2022-04-07"));
   return (
     <Grid
       container
@@ -28,17 +32,12 @@ export default function SignIn() {
         <Grow in={true} timeout={1000}>
           <Card style={{ minHeight: "50vh", minWidth: "50vh" }}>
             <CardContent>
-            <Stack
-                      spacing={2}
-                      direction="row"
-                      divider={<Divider orientation="vertical" flexItem />}
-                    >
               <Stack
                 spacing={2}
                 divider={<Divider orientation="horizontal" flexItem />}
               >
                 <Typography sx={{ mt: 0.1, mb: 0.1 }} variant="h6">
-                  Sign In:
+                  Register:
                 </Typography>
                 <TextField id="username" label="Username" variant="standard" />
                 <TextField
@@ -47,20 +46,21 @@ export default function SignIn() {
                   variant="standard"
                   type="password"
                 />
+                <TextField id="email" label="Email" variant="standard" />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DateTimePicker
+                    inputFormat="MM/DD/YYYY H:m:s"
+                    renderInput={(props) => <TextField {...props} />}
+                    label="DateTimePicker"
+                    value={dob}
+                    onChange={(newValue) => {
+                      setDob(newValue);
+                    }}
+                  />
+                </LocalizationProvider>
                 <IconButton>
-                  <LoginIcon />
+                  <HowToRegIcon />
                 </IconButton>
-                </Stack>
-                <Stack
-                spacing={2}
-              >
-              <Typography sx={{ mt: 0.1, mb: 0.1 }} variant="h8">
-                  If you need an account you can register here:
-                  </Typography>
-                  <IconButton>
-                  <LoginIcon component={Link} to="/Register"/>
-                </IconButton>
-              </Stack>
               </Stack>
             </CardContent>
           </Card>

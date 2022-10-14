@@ -18,6 +18,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import TaskCreator from "./TaskCreator";
 import { Link } from "react-router-dom";
+import Slide from '@mui/material/Slide';
 
 const RESOURCE_API_EMPLOYEES_GET = "http://localhost:5000/employees";
 const RESOURCE_API_EMPLOYEE_GET_NAME = "http://localhost:5000/employees/";
@@ -160,6 +161,7 @@ export default function RM() {
       />
       <Box>
       </Box>
+      <Slide direction="up" in={true} mountOnEnter unmountOnExit timeout={500}>
       <div className="App" style={{ padding: 30 }}>
         <ProfileDialog
           open={open}
@@ -235,6 +237,7 @@ export default function RM() {
           </Snackbar>
         </Box>
       </div>
+      </Slide>
     </Box>
   );
 }
