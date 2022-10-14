@@ -25,9 +25,11 @@ export default function TaskTable({
   handleInfo,
   handlePop,
   setChange,
-  setDelOpen
+  setDelOpen,
+  sendComment
 }) {
   const [tasks, setTasks] = React.useState(taskList);
+  const [comment, setComment] = React.useState("");
 
   useEffect(() => {
     setTasks(taskList);
@@ -90,6 +92,24 @@ export default function TaskTable({
                             <Stack spacing={2} direction="row">
                               <AssignmentIcon />
                               {row.content}
+                            </Stack>
+                          </CardContent>
+                        </Card>
+                        <Card>
+                          <CardContent>
+                            <Stack spacing={2} direction="row">
+                                  <TextField
+                                  id="comment"
+                                  label="Enter Comment"
+                                  variant="standard"
+                                  onChange={(e) => setTf(e.target.value)}
+                                />
+                                <IconButton
+                                  aria-label="submit"
+                                  onClick={() => {
+                                    sendComment();
+                                  }}
+                                >
                             </Stack>
                           </CardContent>
                         </Card>

@@ -14,7 +14,7 @@ def employees():
         response.append({'id': emp.id, 'name': emp.name, 'dob': emp.dob, 'email': emp.email})
     return response
 
-
+# needed for search bar
 @app.route('/employees/<string:name>')
 def employee(name):
     emp = Employee.query.filter_by(name=name).first_or_404()
@@ -66,7 +66,6 @@ def newTask():
 @app.route('/deleteTask', methods=['POST'])
 def deleteTask():
     data = request.get_json()
-    print(data)
     task = Task.query.filter_by(id=data['id']).first()
     if task:
         db.session.delete(task)
@@ -107,8 +106,9 @@ def signin():
 
 
 @app.route('/getComments')
-def getComments(task):
-    comments = Comment.query.filter_by(task_id=task).all()
+def getComments():
+    data = request.get_json()
+    comments = Comment.query.filter_by(task_id=data['task_id']).all()
     response = []
     for comment in comments:
         response.append({'content': comment.content, 'date_posted': comment.date_posted,
@@ -117,7 +117,7 @@ def getComments(task):
 
 
 @app.route('/addCommentToTask', methods=['POST'])
-def addComment(task):
+def addComment():
     data = request.get_json()
     date_posted = datetime.strptime(data['date_posted'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%m/%d/%y %H:%M:%S')
     newComment = Comment(
@@ -131,8 +131,9 @@ def addComment(task):
 
 
 @app.route('/deleteComment', methods=['POST'])
-def deleteComment(comment_id):
-    commentToDelete = Comment.query.filter_by(id=comment_id).first()
+def deleteComment():
+    data = request.get_json()
+    commentToDelete = Comment.query.filter_by(id=data['comment_id']).first()
     if task:
         db.session.delete(commentToDelete)
         db.session.commit()
