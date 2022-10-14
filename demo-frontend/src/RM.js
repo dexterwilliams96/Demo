@@ -39,6 +39,7 @@ export default function RM({ token, setToken }) {
   const [intarget, setInTarget] = React.useState([token.name, token.id]);
   const [alert, setAlert] = React.useState("Dex");
   const [newtask, setNewTask] = React.useState({});
+  const [change, setChange] = React.useState(false);
 
   useEffect(() => {
     getEmployees();
@@ -55,6 +56,13 @@ export default function RM({ token, setToken }) {
   useEffect(() => {
     setTarget(intarget);
   }, [tasks]);
+
+  useEffect(() => {
+     if(change) {
+        getTasks();
+        setChange(false);
+     }
+  }, [change]);
 
   useEffect(() => {
     sendTask(newtask);
@@ -101,6 +109,7 @@ export default function RM({ token, setToken }) {
       .post(RESOURCE_API_TASKS_POST, newtask)
       .then(function (response) {
         console.log(response);
+        setChange(true);
       })
       .catch(function (error) {
         console.log(error);
@@ -195,7 +204,8 @@ export default function RM({ token, setToken }) {
                         <TaskTable
                           handleInfo={handleTextChangeT}
                           handlePop={handleClickOpenT}
-                          tasks={tasks}
+                          taskList={tasks}
+                          setChange={setChange}
                         />
                       </Stack>
                       <TaskCreator
