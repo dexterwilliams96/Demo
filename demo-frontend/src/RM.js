@@ -24,6 +24,9 @@ const RESOURCE_API_EMPLOYEES_GET = "http://localhost:5000/employees";
 const RESOURCE_API_EMPLOYEE_GET_NAME = "http://localhost:5000/employees/";
 const RESOURCE_API_EMPLOYEE_GET = "http://localhost:5000/tasks/";
 const RESOURCE_API_TASKS_POST = "http://localhost:5000/newTask";
+const RESOURCE_API_COMMENT_POST = "http://localhost:5000/addCommentToTask";
+const RESOURCE_API_COMMENTS = "http://localhost:5000/getComments/";
+
 
 export default function RM({ token, setToken }) {
   const [open, setOpen] = React.useState(false);
@@ -39,9 +42,12 @@ export default function RM({ token, setToken }) {
   const [intarget, setInTarget] = React.useState([token.name, token.id]);
   const [alert, setAlert] = React.useState("Dex");
   const [newtask, setNewTask] = React.useState({});
+  const [newcomment, setNewComment] = React.useState({});
   const [change, setChange] = React.useState(false);
   const [delopen, setDelOpen] = React.useState(false);
   const [addopen, setAddOpen] = React.useState(false);
+  const [changeComments, setChangeComments] = React.useState(-1);
+  const [comments, setComments] = React.useState([]);
 
   const handleDelClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -80,8 +86,16 @@ export default function RM({ token, setToken }) {
   }, [change]);
 
   useEffect(() => {
+    getComments();
+  }, [changeComments]);
+
+  useEffect(() => {
     sendTask(newtask);
   }, [newtask]);
+
+  useEffect(() => {
+    sendComment(newcomment);
+  }, [newcomment]);
 
   const getEmployees = () => {
     axios
@@ -119,6 +133,18 @@ export default function RM({ token, setToken }) {
       });
   };
 
+  const getComments = () => {
+    axios
+      .get(RESOURCE_API_COMMENTS + changeComments)
+      .then(function (response) {
+      console.log(comments)
+        setComments(response.data)
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   const sendTask = () => {
     axios
       .post(RESOURCE_API_TASKS_POST, newtask)
@@ -132,6 +158,18 @@ export default function RM({ token, setToken }) {
       });
   };
 
+  const sendComment = () => {
+    axios
+      .post(RESOURCE_API_COMMENT_POST, newcomment)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+
   const handleTargetChange = (val) => {
     setInTarget(val);
   };
@@ -141,6 +179,7 @@ export default function RM({ token, setToken }) {
   };
 
   const handleClickOpen = () => {
+    getComments();
     setOpen(true);
   };
 
@@ -223,6 +262,10 @@ export default function RM({ token, setToken }) {
                           taskList={tasks}
                           setChange={setChange}
                           setDelOpen={setDelOpen}
+                          sendComment={setNewComment}
+                          token={token}
+                          cs={comments}
+                          changeComments={setChangeComments}
                         />
                       </Stack>
                       <TaskCreator

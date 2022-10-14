@@ -201,7 +201,7 @@ export default function SignIn({ token, setToken }) {
                         <DatePicker
                           inputFormat="MM/DD/YYYY"
                           renderInput={(props) => <TextField {...props} />}
-                          label="DatePicker"
+                          label="Date of Birth"
                           value={dob}
                           onChange={(newValue) => {
                             setDob(newValue);

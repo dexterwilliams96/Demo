@@ -105,10 +105,9 @@ def signin():
         return "false"
 
 
-@app.route('/getComments')
-def getComments():
-    data = request.get_json()
-    comments = Comment.query.filter_by(task_id=data['task_id']).all()
+@app.route('/getComments/<int:task_id>')
+def getComments(task_id):
+    comments = Comment.query.filter_by(task_id=task_id).all()
     response = []
     for comment in comments:
         response.append({'content': comment.content, 'date_posted': comment.date_posted,
@@ -119,7 +118,8 @@ def getComments():
 @app.route('/addCommentToTask', methods=['POST'])
 def addComment():
     data = request.get_json()
-    date_posted = datetime.strptime(data['date_posted'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%m/%d/%y %H:%M:%S')
+    print(data)
+    date_posted = datetime.strptime(data['date_posted'], '%m/%d/%Y, %I:%M:%S %p').strftime('%m/%d/%y %H:%M:%S')
     newComment = Comment(
         content=data['content'],
         date_posted=date_posted,
