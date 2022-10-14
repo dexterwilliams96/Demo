@@ -7,6 +7,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import { Link } from "react-router-dom";
 
 export default function Menubar({ handleTargetChange, user, handleProfile, handleBio }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -63,6 +64,11 @@ export default function Menubar({ handleTargetChange, user, handleProfile, handl
               }}
             >
               My Tasks
+            </MenuItem>
+            <MenuItem
+              component={Link} to="/"
+            >
+              Sign out
             </MenuItem>
           </Menu>
         </div>

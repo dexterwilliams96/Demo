@@ -14,7 +14,7 @@ import Grow from "@mui/material/Grow";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useState } from "react";
 
 export default function Register() {
@@ -48,10 +48,10 @@ export default function Register() {
                 />
                 <TextField id="email" label="Email" variant="standard" />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker
-                    inputFormat="MM/DD/YYYY H:m:s"
+                  <DatePicker
+                    inputFormat="MM/DD/YYYY"
                     renderInput={(props) => <TextField {...props} />}
-                    label="DateTimePicker"
+                    label="DatePicker"
                     value={dob}
                     onChange={(newValue) => {
                       setDob(newValue);

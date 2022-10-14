@@ -12,9 +12,10 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Grow from "@mui/material/Grow";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export default function SignIn() {
+    const [username, setUsername] =
   return (
     <Grid
       container
@@ -28,11 +29,6 @@ export default function SignIn() {
         <Grow in={true} timeout={1000}>
           <Card style={{ minHeight: "50vh", minWidth: "50vh" }}>
             <CardContent>
-            <Stack
-                      spacing={2}
-                      direction="row"
-                      divider={<Divider orientation="vertical" flexItem />}
-                    >
               <Stack
                 spacing={2}
                 divider={<Divider orientation="horizontal" flexItem />}
@@ -50,17 +46,11 @@ export default function SignIn() {
                 <IconButton>
                   <LoginIcon />
                 </IconButton>
-                </Stack>
-                <Stack
-                spacing={2}
-              >
-              <Typography sx={{ mt: 0.1, mb: 0.1 }} variant="h8">
-                  If you need an account you can register here:
+                <Link to="/Register">
+                  <Typography sx={{ mt: 0.1, mb: 0.1 }} variant="h8">
+                    If you need an account you can register here.
                   </Typography>
-                  <IconButton>
-                  <LoginIcon component={Link} to="/Register"/>
-                </IconButton>
-              </Stack>
+                </Link>
               </Stack>
             </CardContent>
           </Card>
