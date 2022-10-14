@@ -24,8 +24,8 @@ const steps = [
 export default function TaskCreator({ sendTask, users }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
-  const [from, setFrom] = React.useState(dayjs("2022-04-07"));
-  const [to, setTo] = React.useState(dayjs("2022-04-07"));
+  const [from, setFrom] = React.useState(dayjs());
+  const [to, setTo] = React.useState(dayjs());
   const [tf, setTf] = useState("Enter Name");
   const [tf2, setTf2] = useState("Enter Content");
   const [open, setOpen] = useState(false);

@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import dayjs from "dayjs";
 import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -8,8 +8,8 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 
 export default function DateToFromPicker() {
-  const [from, setFrom] = React.useState(null);
-  const [to, setTo] = React.useState(null);
+  const [from, setFrom] = React.useState(dayjs());
+  const [to, setTo] = React.useState(dayjs());
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

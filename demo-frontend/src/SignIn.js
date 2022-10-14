@@ -33,7 +33,7 @@ export default function SignIn({ token, setToken }) {
   const [emailr, setEmailR] = React.useState("");
   const [name, setName] = React.useState("");
   const [passwordr, setPasswordR] = React.useState("");
-  const [dob, setDob] = React.useState(dayjs("2022-04-07"));
+  const [dob, setDob] = React.useState(dayjs());
 
   const [sropen, setSROpen] = React.useState(false);
   const [wropen, setWROpen] = React.useState(false);
