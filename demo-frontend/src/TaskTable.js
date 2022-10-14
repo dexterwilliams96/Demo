@@ -8,15 +8,21 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from "@mui/icons-material/Info";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Stack from "@mui/material/Stack";
+import TodayIcon from '@mui/icons-material/Today';
+import EventIcon from '@mui/icons-material/Event';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
-export default function TaskTable({ tasks }) {
+export default function TaskTable({ tasks, handleInfo, handlePop }) {
   return (
-    <TableContainer component={Paper} sx={{ maxHeight: 200}}>
-      <Table sx={{ minWidth: 500}} aria-label="task list">
+    <TableContainer component={Paper} sx={{ maxHeight: 200 }}>
+      <Table sx={{ minWidth: 500 }} aria-label="task list">
         <TableHead>
           <TableRow>
             <TableCell align="left">Details</TableCell>
-            <TableCell align="left">Content</TableCell>
+            <TableCell align="left">Name</TableCell>
             <TableCell align="left">Start Date</TableCell>
             <TableCell align="left">End Date</TableCell>
           </TableRow>
@@ -24,15 +30,49 @@ export default function TaskTable({ tasks }) {
         <TableBody>
           {tasks.map((row) => (
             <TableRow
-              key={row.name}
+              key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="left">
-                <IconButton aria-label="info">
+                <IconButton
+                  aria-label="info"
+                  onClick={() => {
+                    handleInfo(
+                      <Stack spacing={2}>
+                        <Card>
+                          <CardContent>
+                            <Stack spacing={2} direction="row">
+                              <TodayIcon />
+                              {row.startDate}
+                            </Stack>
+                          </CardContent>
+                        </Card>
+                        <Card>
+                          <CardContent>
+                            <Stack spacing={2} direction="row">
+                              <EventIcon />
+                              {row.endDate}
+                            </Stack>
+                          </CardContent>
+                        </Card>
+                        <Card>
+                          <CardContent>
+                            <Stack spacing={2} direction="row">
+                              <AssignmentIcon />
+                              {row.content}
+                            </Stack>
+                          </CardContent>
+                        </Card>
+                      </Stack>,
+                      row.name
+                    );
+                    handlePop();
+                  }}
+                >
                   <InfoIcon />
                 </IconButton>
               </TableCell>
-              <TableCell align="left">{row.content}</TableCell>
+              <TableCell align="left">{row.name}</TableCell>
               <TableCell
                 sx={{
                   ellipsis: {

@@ -11,27 +11,34 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { useState } from "react";
-import EmployeeDialog from "./EmployeeDialog"
+import EmployeeDialog from "./EmployeeDialog";
 
-const steps = ["Write Task Contents", "Select Start Date", "Select End Date", "Select User"];
+const steps = [
+  "Write Task Name",
+  "Write Task Contents",
+  "Select Start Date",
+  "Select End Date",
+  "Select User",
+];
 
 export default function TaskCreator({ sendTask, users }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const [from, setFrom] = React.useState(dayjs("2022-04-07"));
   const [to, setTo] = React.useState(dayjs("2022-04-07"));
-  const [tf, setTf] = useState("Enter Content");
+  const [tf, setTf] = useState("Enter Name");
+  const [tf2, setTf2] = useState("Enter Content");
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState(-1);
 
   const handleDialog = () => {
     setOpen(true);
-  }
+  };
 
   const closeDialog = (val) => {
     setOpen(false);
     setUser(val);
-  }
+  };
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
@@ -52,13 +59,19 @@ export default function TaskCreator({ sendTask, users }) {
   };
 
   const handleReset = () => {
-    sendTask({"user_id": user, "content": tf, "start_date": to, "end_date": from});
+    sendTask({
+      user_id: user,
+      name: tf,
+      content: tf2,
+      start_date: to,
+      end_date: from,
+    });
     setActiveStep(0);
   };
 
   return (
     <Box sx={{ width: "100%" }}>
-      <EmployeeDialog onClose={closeDialog} open={open} users={users}/>
+      <EmployeeDialog onClose={closeDialog} open={open} users={users} />
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
@@ -67,7 +80,7 @@ export default function TaskCreator({ sendTask, users }) {
             stepProps.completed = false;
           }
           return (
-            <Step key={label} sx={{margin: 1}}{...stepProps}>
+            <Step key={label} sx={{ margin: 1 }} {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
             </Step>
           );
@@ -78,7 +91,9 @@ export default function TaskCreator({ sendTask, users }) {
           <Typography sx={{ mt: 2, mb: 1 }}>Details Filled Out.</Typography>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleReset}>Submit</Button>
+            <Button onClick={handleReset} variant="outlined">
+              Submit
+            </Button>
           </Box>
         </React.Fragment>
       ) : activeStep === 0 ? (
@@ -86,8 +101,9 @@ export default function TaskCreator({ sendTask, users }) {
           <TextField
             label={tf}
             multiline
-            rows={2}
+            rows={1}
             onChange={(e) => setTf(e.target.value)}
+            variant="standard"
           />
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
@@ -95,20 +111,46 @@ export default function TaskCreator({ sendTask, users }) {
               disabled={activeStep === 0}
               onClick={handleBack}
               sx={{ mr: 1 }}
+              variant="outlined"
             >
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleNext}>
+            <Button onClick={handleNext} variant="outlined">
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
           </Box>
         </React.Fragment>
       ) : activeStep === 1 ? (
         <React.Fragment>
+          <TextField
+            label={tf2}
+            multiline
+            rows={2}
+            onChange={(e) => setTf2(e.target.value)}
+            variant="standard"
+          />
+          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+            <Button
+              color="inherit"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ mr: 1 }}
+              variant="outlined"
+            >
+              Back
+            </Button>
+            <Box sx={{ flex: "1 1 auto" }} />
+            <Button onClick={handleNext} variant="outlined">
+              {activeStep === steps.length - 1 ? "Finish" : "Next"}
+            </Button>
+          </Box>
+        </React.Fragment>
+      ) : activeStep === 2 ? (
+        <React.Fragment>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
-            inputFormat="MM/DD/YYYY H:m:s"
+              inputFormat="MM/DD/YYYY H:m:s"
               renderInput={(props) => <TextField {...props} />}
               label="DateTimePicker"
               value={from}
@@ -123,16 +165,17 @@ export default function TaskCreator({ sendTask, users }) {
               disabled={activeStep === 0}
               onClick={handleBack}
               sx={{ mr: 1 }}
+              variant="outlined"
             >
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleNext}>
+            <Button onClick={handleNext} variant="outlined">
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
           </Box>
         </React.Fragment>
-      ) : activeStep === 2 ? (
+      ) : activeStep === 3 ? (
         <React.Fragment>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
@@ -151,37 +194,46 @@ export default function TaskCreator({ sendTask, users }) {
               disabled={activeStep === 0}
               onClick={handleBack}
               sx={{ mr: 1 }}
+              variant="outlined"
             >
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleNext}>
+            <Button onClick={handleNext} variant="outlined">
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
           </Box>
         </React.Fragment>
-      ) : (<React.Fragment>
-            <Button
-              color="inherit"
-              onClick={handleDialog}
-              sx={{ mr: 1 }}
-            >
+      ) : (
+        <React.Fragment>
+          <Button
+            color="inherit"
+            onClick={handleDialog}
+            sx={{ mr: 1 }}
+            variant="outlined"
+          >
             Select User
-            </Button>
+          </Button>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
               color="inherit"
               onClick={handleBack}
               sx={{ mr: 1 }}
+              variant="outlined"
             >
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
             <Button
-              disabled={user === -1} onClick={handleNext}>
+              disabled={user === -1}
+              onClick={handleNext}
+              variant="outlined"
+            >
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
-          </Box></React.Fragment>)}
+          </Box>
+        </React.Fragment>
+      )}
     </Box>
   );
 }

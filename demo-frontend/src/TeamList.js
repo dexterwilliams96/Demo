@@ -27,13 +27,13 @@ export default function TeamList({ handleProfile, handleBio, employees, handleTa
         <IconButton
           aria-label="search"
           onClick={() => {
-            handleTargetChange(tf);
+            handleTargetChange([tf, -1]);
           }}
         >
           <PersonSearchIcon />
         </IconButton>
       </Stack>
-      <List>
+      <List sx={{ maxHeight: 300, overflow: 'auto' }}>
         {employees.map((employee) => {
           return (
             <Profile
