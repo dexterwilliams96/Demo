@@ -1,9 +1,9 @@
 from datetime import datetime
 from flask import request, redirect
-from app import app, db
+from app import app, db, bcrypt
 from models import Employee, Task, Comment
 import json
-from flask_sqlalchemy import exc
+from sqlalchemy import exc
 
 
 @app.route('/employees')
@@ -63,6 +63,14 @@ def newTask():
     return ""
 
 
+@app.route('/deleteTask', methods=['POST'])
+def deleteTask(employeeId):
+    task = Task.query.filter_by(id=employeeId).first()
+    if task:
+        db.session.delete(task)
+        db.session.commit()
+
+
 @app.route('/register', methods=['POST'])
 def register(data):
     dob = datetime.strptime(data['dob'], '%Y-%m-%d').strftime('%m/%d/%y')
@@ -77,6 +85,7 @@ def register(data):
         db.sesson.commit()
         return True
     except exc.SQLAlchemyError:
+        db.session.rollback()
         return False
 
 
