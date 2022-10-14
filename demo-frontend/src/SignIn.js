@@ -14,8 +14,17 @@ import Grow from "@mui/material/Grow";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { Link } from "react-router-dom";
 
-export default function SignIn() {
-    const [username, setUsername] =
+export default function SignIn({ setToken }) {
+    const [username, setUsername] = React.useState("Username");
+    const [password, setPassword] = React.useState("");
+
+    const handleSubmit = () => {
+    const token = {
+      name: username,
+      id: password
+    }
+    setToken(token);
+  }
   return (
     <Grid
       container
@@ -36,14 +45,20 @@ export default function SignIn() {
                 <Typography sx={{ mt: 0.1, mb: 0.1 }} variant="h6">
                   Sign In:
                 </Typography>
-                <TextField id="username" label="Username" variant="standard" />
+                <TextField
+                id="username"
+                label={username}
+                onChange={(e) => setUsername(e.target.value)}
+                variant="standard"
+                />
                 <TextField
                   id="password"
-                  label="Password"
+                  label={password}
                   variant="standard"
+                  onChange={(e) => setPassword(e.target.value)}
                   type="password"
                 />
-                <IconButton>
+                <IconButton disabled={password === '' || username === ''} onClick={handleSubmit}>
                   <LoginIcon />
                 </IconButton>
                 <Link to="/Register">
