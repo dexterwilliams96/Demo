@@ -64,9 +64,20 @@ def newTask():
 
 @app.route('/register', methods=['POST'])
 def register(data):
+    dob = datetime.strptime(data['dob'], '%Y-%m-%d').strftime('%m/%d/%y')
     new_employee = Employee(
+                           email=data['email'],
+                           password=data['password'],
                            name=data['name'],
-                           dob=data['dob'].strp)
+                           dob=dob)
     db.session.add(new_employee)
     db.sesson.commit()
     return redirect('home')
+
+@app.route('/signin', methods=['POST'])
+def signin(data):
+    # data will contain username and password
+    # check if user with those deets exists
+    # if it does return a dict: {id: userid, name: username}
+    # Else return empty dict
+    return {}

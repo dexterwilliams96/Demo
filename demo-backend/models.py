@@ -16,7 +16,6 @@ class Employee(db.Model):
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(30), default='no name', server_default=String("pre table migration"), nullable=False)
     content = db.Column(db.Text, nullable=False, default='Empty Content')
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
