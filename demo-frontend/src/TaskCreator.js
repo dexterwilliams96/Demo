@@ -152,7 +152,7 @@ export default function TaskCreator({ sendTask, users }) {
             <DateTimePicker
               inputFormat="MM/DD/YYYY H:m:s"
               renderInput={(props) => <TextField {...props} />}
-              label="DateTimePicker"
+              label="Start Date"
               value={from}
               onChange={(newValue) => {
                 setFrom(newValue);
@@ -180,7 +180,7 @@ export default function TaskCreator({ sendTask, users }) {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
               renderInput={(props) => <TextField {...props} />}
-              label="DateTimePicker"
+              label="End Date"
               value={to}
               onChange={(newValue) => {
                 setTo(newValue);

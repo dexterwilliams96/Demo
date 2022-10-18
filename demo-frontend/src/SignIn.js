@@ -12,13 +12,11 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Grow from "@mui/material/Grow";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
@@ -45,6 +43,7 @@ export default function SignIn({ token, setToken }) {
     if (token) {
       navigate("/RM");
     }
+  // eslint-disable-next-line
   }, [token]);
 
   const signIn = (credentials) => {
@@ -132,6 +131,13 @@ export default function SignIn({ token, setToken }) {
         <Grow in={true} timeout={1000}>
           <Card style={{ minHeight: "50vh", minWidth: "50vh" }}>
             <CardContent>
+            <Stack
+                  spacing={2}
+                  divider={<Divider orientation="horizontal" flexItem />}
+                >
+                <Typography sx={{ mt: 0.1, mb: 0.1 }} variant="h6">
+                    Welcome to Resource Manager
+                  </Typography>
               <Stack
                 spacing={2}
                 direction="row"
@@ -219,6 +225,7 @@ export default function SignIn({ token, setToken }) {
                     </Stack>
                   </CardContent>
                 </Card>
+              </Stack>
               </Stack>
             </CardContent>
           </Card>
