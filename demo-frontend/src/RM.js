@@ -170,9 +170,10 @@ export default function RM({ token, setToken }) {
               </Card>
             </Stack>
           </CardContent>
+          </Card>
           <Card>
             <CardContent>
-              <Typography sx={{ ml: 2, mt: 0.1, mb: 0.1 }} variant="h6">
+              <Typography sx={{ ml: 2, mt: 0.1, mb: 0.1, mr: 2 }} variant="h6">
                 Comments:
               </Typography>
               <List sx={{ maxHeight: 300, overflow: "auto" }}>
@@ -197,7 +198,6 @@ export default function RM({ token, setToken }) {
               </List>
             </CardContent>
           </Card>
-        </Card>
       </Stack>,
       changeComments.name
     );
@@ -274,6 +274,7 @@ export default function RM({ token, setToken }) {
       .post(RESOURCE_API_COMMENT_POST, newcomment)
       .then(function (response) {
         console.log(response);
+        setAddOpen(true);
         if (changeComments) {
           getComments();
         }
@@ -288,6 +289,7 @@ export default function RM({ token, setToken }) {
       .post(RESOURCE_API_DEL_COMMENT, data)
       .then(function (response) {
         console.log(response);
+        setDelOpen(true);
         if (changeComments) {
           getComments();
         }
@@ -440,7 +442,7 @@ export default function RM({ token, setToken }) {
                 severity="success"
                 sx={{ width: "100%" }}
               >
-                Task deleted.
+                Content deleted.
               </MuiAlert>
             </Snackbar>
             <Snackbar
@@ -455,7 +457,7 @@ export default function RM({ token, setToken }) {
                 severity="success"
                 sx={{ width: "100%" }}
               >
-                Task added.
+                Content added.
               </MuiAlert>
             </Snackbar>
           </Box>
