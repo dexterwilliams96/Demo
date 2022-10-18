@@ -43,6 +43,7 @@ export default function SignIn({ token, setToken }) {
     if (token) {
       navigate("/RM");
     }
+  // eslint-disable-next-line
   }, [token]);
 
   const signIn = (credentials) => {
@@ -130,6 +131,13 @@ export default function SignIn({ token, setToken }) {
         <Grow in={true} timeout={1000}>
           <Card style={{ minHeight: "50vh", minWidth: "50vh" }}>
             <CardContent>
+            <Stack
+                  spacing={2}
+                  divider={<Divider orientation="horizontal" flexItem />}
+                >
+                <Typography sx={{ mt: 0.1, mb: 0.1 }} variant="h6">
+                    Welcome to Resource Manager
+                  </Typography>
               <Stack
                 spacing={2}
                 direction="row"
@@ -217,6 +225,7 @@ export default function SignIn({ token, setToken }) {
                     </Stack>
                   </CardContent>
                 </Card>
+              </Stack>
               </Stack>
             </CardContent>
           </Card>
