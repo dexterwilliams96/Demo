@@ -28,7 +28,8 @@ import TodayIcon from "@mui/icons-material/Today";
 import EventIcon from "@mui/icons-material/Event";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import IconButton from "@mui/material/IconButton";
-import useDidMountEffect from './useDidMountEffect';
+import useDidMountEffect from "./useDidMountEffect";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const RESOURCE_API_EMPLOYEES_GET = "http://localhost:5000/employees";
 const RESOURCE_API_EMPLOYEE_GET_NAME = "http://localhost:5000/employees/";
@@ -36,6 +37,7 @@ const RESOURCE_API_EMPLOYEE_GET = "http://localhost:5000/tasks/";
 const RESOURCE_API_TASKS_POST = "http://localhost:5000/newTask";
 const RESOURCE_API_COMMENT_POST = "http://localhost:5000/addCommentToTask";
 const RESOURCE_API_COMMENTS = "http://localhost:5000/getComments/";
+const RESOURCE_API_DEL_COMMENT = "http://localhost:5000/deleteComment";
 
 export default function RM({ token, setToken }) {
   const [open, setOpen] = React.useState(false);
@@ -96,12 +98,12 @@ export default function RM({ token, setToken }) {
   }, [change]);
 
   useDidMountEffect(() => {
-      sendComment();
+    sendComment();
   }, [sendnewcomment]);
 
   useDidMountEffect(() => {
-    if(changeComments) {
-        getComments();
+    if (changeComments) {
+      getComments();
     }
   }, [changeComments]);
 
@@ -146,12 +148,14 @@ export default function RM({ token, setToken }) {
                       id="comment"
                       label="Enter Comment"
                       variant="standard"
-                      onChange={(e) => setNewComment({
+                      onChange={(e) =>
+                        setNewComment({
                           content: e.target.value,
                           date_posted: new Date().toLocaleString(),
                           task_id: changeComments.id,
                           employee_id: token.id,
-                        })}
+                        })
+                      }
                     />
                     <IconButton
                       aria-label="submit"
@@ -179,6 +183,14 @@ export default function RM({ token, setToken }) {
                         primary={comment.content}
                         secondary={comment.date_posted}
                       />
+                      <IconButton
+                        aria-label="del"
+                        onClick={() => {
+                          deleteComment({ comment_id: comment.comment_id });
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
                     </ListItem>
                   );
                 })}
@@ -262,7 +274,23 @@ export default function RM({ token, setToken }) {
       .post(RESOURCE_API_COMMENT_POST, newcomment)
       .then(function (response) {
         console.log(response);
-        if(changeComments){getComments();}
+        if (changeComments) {
+          getComments();
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const deleteComment = (data) => {
+    axios
+      .post(RESOURCE_API_DEL_COMMENT, data)
+      .then(function (response) {
+        console.log(response);
+        if (changeComments) {
+          getComments();
+        }
       })
       .catch(function (error) {
         console.log(error);

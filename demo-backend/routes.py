@@ -111,14 +111,13 @@ def getComments(task_id):
     response = []
     for comment in comments:
         response.append({'content': comment.content, 'date_posted': comment.date_posted,
-                         'employee_id': comment.employee_id})
+                         'employee_id': comment.employee_id, 'comment_id': comment.id})
     return response
 
 
 @app.route('/addCommentToTask', methods=['POST', 'GET'])
 def addComment():
     data = request.get_json()
-    print(data)
     date_posted = datetime.strptime(data['date_posted'], '%m/%d/%Y, %I:%M:%S %p').strftime('%m/%d/%y %H:%M:%S')
     newComment = Comment(
         content=data['content'],
@@ -133,7 +132,9 @@ def addComment():
 @app.route('/deleteComment', methods=['POST'])
 def deleteComment():
     data = request.get_json()
-    commentToDelete = Comment.query.filter_by(id=data['comment_id']).first()
-    if task:
-        db.session.delete(commentToDelete)
+    comment_to_delete = Comment.query.filter_by(id=data['comment_id']).first()
+    if comment_to_delete:
+        db.session.delete(comment_to_delete)
         db.session.commit()
+        return "true"
+    return "false"
