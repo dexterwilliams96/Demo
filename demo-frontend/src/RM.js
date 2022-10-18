@@ -4,7 +4,6 @@ import "./App.css";
 import Box from "@mui/material/Box";
 import Menubar from "./Menubar";
 import Grid from "@mui/material/Grid";
-import DateToFromPicker from "./DateToFromPicker";
 import Divider from "@mui/material/Divider";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -17,7 +16,6 @@ import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import TaskCreator from "./TaskCreator";
-import { Link } from "react-router-dom";
 import Slide from "@mui/material/Slide";
 import PublishIcon from "@mui/icons-material/Publish";
 import TextField from "@mui/material/TextField";
@@ -84,10 +82,13 @@ export default function RM({ token, setToken }) {
     } else {
       getTasksName();
     }
+  // eslint-disable-next-line
   }, [intarget]);
 
+  // eslint-disable-next-line
   useEffect(() => {
     setTarget(intarget);
+  // eslint-disable-next-line
   }, [tasks]);
 
   useDidMountEffect(() => {
@@ -342,8 +343,6 @@ export default function RM({ token, setToken }) {
     setWarnOpen(false);
   };
 
-  const items = ["Home", "Settings"];
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Menubar
@@ -385,7 +384,6 @@ export default function RM({ token, setToken }) {
                         direction="row"
                         divider={<Divider orientation="vertical" flexItem />}
                       >
-                        <DateToFromPicker />
                         <TaskTable
                           taskList={tasks}
                           setChange={setChange}
