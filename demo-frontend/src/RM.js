@@ -19,6 +19,16 @@ import MuiAlert from "@mui/material/Alert";
 import TaskCreator from "./TaskCreator";
 import { Link } from "react-router-dom";
 import Slide from "@mui/material/Slide";
+import PublishIcon from "@mui/icons-material/Publish";
+import TextField from "@mui/material/TextField";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import List from "@mui/material/List";
+import TodayIcon from "@mui/icons-material/Today";
+import EventIcon from "@mui/icons-material/Event";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import IconButton from "@mui/material/IconButton";
+import useDidMountEffect from './useDidMountEffect';
 
 const RESOURCE_API_EMPLOYEES_GET = "http://localhost:5000/employees";
 const RESOURCE_API_EMPLOYEE_GET_NAME = "http://localhost:5000/employees/";
@@ -26,7 +36,6 @@ const RESOURCE_API_EMPLOYEE_GET = "http://localhost:5000/tasks/";
 const RESOURCE_API_TASKS_POST = "http://localhost:5000/newTask";
 const RESOURCE_API_COMMENT_POST = "http://localhost:5000/addCommentToTask";
 const RESOURCE_API_COMMENTS = "http://localhost:5000/getComments/";
-
 
 export default function RM({ token, setToken }) {
   const [open, setOpen] = React.useState(false);
@@ -43,10 +52,11 @@ export default function RM({ token, setToken }) {
   const [alert, setAlert] = React.useState("Dex");
   const [newtask, setNewTask] = React.useState({});
   const [newcomment, setNewComment] = React.useState({});
+  const [sendnewcomment, setSendNewComment] = React.useState(false);
   const [change, setChange] = React.useState(false);
   const [delopen, setDelOpen] = React.useState(false);
   const [addopen, setAddOpen] = React.useState(false);
-  const [changeComments, setChangeComments] = React.useState(-1);
+  const [changeComments, setChangeComments] = React.useState(null);
   const [comments, setComments] = React.useState([]);
 
   const handleDelClose = (event, reason) => {
@@ -78,24 +88,113 @@ export default function RM({ token, setToken }) {
     setTarget(intarget);
   }, [tasks]);
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     if (change) {
       getTasks();
       setChange(false);
     }
   }, [change]);
 
-  useEffect(() => {
-    getComments();
+  useDidMountEffect(() => {
+      sendComment();
+  }, [sendnewcomment]);
+
+  useDidMountEffect(() => {
+    if(changeComments) {
+        getComments();
+    }
   }, [changeComments]);
 
-  useEffect(() => {
+  useDidMountEffect(() => {
+    handleTextChangeT(
+      <Stack
+        spacing={2}
+        direction="row"
+        divider={<Divider orientation="vertical" flexItem />}
+      >
+        <Card>
+          <CardContent>
+            <Stack spacing={2}>
+              <Card>
+                <CardContent>
+                  <Stack spacing={2} direction="row">
+                    <TodayIcon />
+                    {changeComments.startDate}
+                  </Stack>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent>
+                  <Stack spacing={2} direction="row">
+                    <EventIcon />
+                    {changeComments.endDate}
+                  </Stack>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent>
+                  <Stack spacing={2} direction="row">
+                    <AssignmentIcon />
+                    {changeComments.content}
+                  </Stack>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent>
+                  <Stack spacing={2} direction="row">
+                    <TextField
+                      id="comment"
+                      label="Enter Comment"
+                      variant="standard"
+                      onChange={(e) => setNewComment({
+                          content: e.target.value,
+                          date_posted: new Date().toLocaleString(),
+                          task_id: changeComments.id,
+                          employee_id: token.id,
+                        })}
+                    />
+                    <IconButton
+                      aria-label="submit"
+                      onClick={() => {
+                        setSendNewComment(!sendnewcomment);
+                      }}
+                    >
+                      <PublishIcon />
+                    </IconButton>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Stack>
+          </CardContent>
+          <Card>
+            <CardContent>
+              <Typography sx={{ ml: 2, mt: 0.1, mb: 0.1 }} variant="h6">
+                Comments:
+              </Typography>
+              <List sx={{ maxHeight: 300, overflow: "auto" }}>
+                {comments.map((comment) => {
+                  return (
+                    <ListItem>
+                      <ListItemText
+                        primary={comment.content}
+                        secondary={comment.date_posted}
+                      />
+                    </ListItem>
+                  );
+                })}
+              </List>
+            </CardContent>
+          </Card>
+        </Card>
+      </Stack>,
+      changeComments.name
+    );
+    handleClickOpenT();
+  }, [comments]);
+
+  useDidMountEffect(() => {
     sendTask(newtask);
   }, [newtask]);
-
-  useEffect(() => {
-    sendComment(newcomment);
-  }, [newcomment]);
 
   const getEmployees = () => {
     axios
@@ -135,10 +234,10 @@ export default function RM({ token, setToken }) {
 
   const getComments = () => {
     axios
-      .get(RESOURCE_API_COMMENTS + changeComments)
+      .get(RESOURCE_API_COMMENTS + changeComments.id)
       .then(function (response) {
-      console.log(comments)
-        setComments(response.data)
+        console.log(response);
+        setComments(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -163,12 +262,12 @@ export default function RM({ token, setToken }) {
       .post(RESOURCE_API_COMMENT_POST, newcomment)
       .then(function (response) {
         console.log(response);
+        if(changeComments){getComments();}
       })
       .catch(function (error) {
         console.log(error);
       });
   };
-
 
   const handleTargetChange = (val) => {
     setInTarget(val);
@@ -193,6 +292,7 @@ export default function RM({ token, setToken }) {
 
   const handleCloseT = () => {
     setOpenT(false);
+    setChangeComments(null);
   };
 
   const handleTextChange = (text, title) => {
@@ -257,14 +357,10 @@ export default function RM({ token, setToken }) {
                       >
                         <DateToFromPicker />
                         <TaskTable
-                          handleInfo={handleTextChangeT}
-                          handlePop={handleClickOpenT}
                           taskList={tasks}
                           setChange={setChange}
                           setDelOpen={setDelOpen}
-                          sendComment={setNewComment}
                           token={token}
-                          cs={comments}
                           changeComments={setChangeComments}
                         />
                       </Stack>

@@ -115,7 +115,7 @@ def getComments(task_id):
     return response
 
 
-@app.route('/addCommentToTask', methods=['POST'])
+@app.route('/addCommentToTask', methods=['POST', 'GET'])
 def addComment():
     data = request.get_json()
     print(data)
